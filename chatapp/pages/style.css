@@ -1,0 +1,241 @@
+  html, body,ul {
+    text-align: center;
+    background-color: Gainsboro;
+  }
+
+  html,body,li,#formsg,ul {
+    padding: 0;
+    margin: 0;
+    font-family: 'Varela Round', sans-serif;
+    color: #262626;
+  }
+
+  @font-face {
+     font-family: 'iconic-sm';
+     src: url('../fonts/iconic-sm.eot');
+  }
+  #reslts {
+    width: 100%;
+    height: 100%;
+  }
+  /*#record {
+    background-color: lightgray;
+  }
+  #record:hover {
+    background-color: gainsboro;
+  }*/
+  #name {
+    width: 27vw;
+  }
+
+  #message {
+    width: 33vw ;
+  }
+  #formsg {
+    bottom: 0;
+    position:fixed;
+    width: 100%;
+    height: 46px;
+    border: 1px solid black;
+    background-color: RoyalBlue;
+  }
+  #usersicon {
+    font-size: 16px;
+  }
+  #infotxt {
+    font-weight: bold;
+  }
+  #infobar {
+    width: 100%;
+    position:fixed;
+  }
+  .copy {
+    top: 20px;
+    right: 20px;
+    background-color: white;
+    border-top: 2px solid cyan;
+    border-left: 2px solid CornflowerBlue;
+    border-bottom: 2px solid cyan;
+    border-right: 2px solid CornflowerBlue;
+    color: black;
+    border-radius: 50%;
+  }
+  .copy:hover {
+    color: white;
+    background-color: black;
+    border-top: 2px solid CornflowerBlue;
+    border-left: 2px solid cyan;
+    border-bottom: 2px solid CornflowerBlue;
+    border-right: 2px solid cyan;
+  }
+  .replay-div {
+    margin: auto;
+    font-size: 12px;
+    border-radius: 10px;
+    background-color: PowderBlue;
+    border-bottom: 2px solid RoyalBlue;
+    border-right: 1px solid RoyalBlue;
+    max-width: 600px !important;
+    width: -webkit-calc(100% - 10px);
+    width: -moz-calc(100% - 10px);
+    width: calc(100% - 10px);
+  }
+  .replay-btn {
+    color: DarkGreen;
+    background-color: white;
+    border-radius: 50%;
+  }
+  .replay-btn:hover {
+    color: white;
+    background-color: DarkGreen;
+  }
+  .trash-btn {
+    color: DarkBlue;
+    background-color: white;
+    border-radius: 50%;
+  }
+  .trash-btn:hover {
+    color: white;
+    background-color: DarkBlue;
+  }
+  .like-btn {
+    color: Red;
+    background-color: white;
+    border-radius: 10px;
+  }
+  .like-btn:hover {
+    color: white;
+    background-color: red;
+  }
+  .p-like {
+    color: Red;
+    font-size: 16px;
+    margin: 0 0 0 0 !important;
+    padding: 0 0 0 0 !important;
+  }
+  input {
+    margin-top: 9px !important;
+    font-family: 'Varela Round', sans-serif;
+    border-radius: 16px;
+    border: 0;
+  }
+  input:focus,#send:focus {
+    outline: none;
+  }
+  #send {
+    border: 2px solid darkblue;
+    background-color: DarkBlue;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 16px;
+    display: inline-block;
+    width: 20vw ;
+  }
+  #send:hover {
+    background-color: white;
+    color: DarkBlue;
+  }
+  #hc_extension_bkgnd {
+    background-color: Gainsboro;
+  }
+  input[type="text"] {
+    border: 2px solid gainsboro;
+    padding-inline-start: 8px;
+    padding-inline-end: 8px;
+    background-color: gainsboro;
+    color: darkblue;
+  }
+  input[type="text"]:hover {
+    border: 2px solid lightgray;
+    background-color: lightgray;
+  }
+  input[type="text"]:focus {
+    border: 2px solid darkblue;
+    background-color: mistyrose;
+  }
+  #color {
+    border: 2px solid darkblue;
+    width: 24px;
+    background-color: DarkBlue;
+  }
+  #color:hover {
+    background-color: white;
+  }
+  .imgbox {
+   display: grid;
+   height: 100%;
+  }
+  .center-fit {
+   max-width: 60%;
+   max-height: 60vh;
+   min-width: 20%;
+   min-height: 20vh;
+   margin: auto;
+  }
+  .rpcn {
+   max-width: 30%;
+   max-height: 30%;
+   min-width: 20%;
+   min-height: 20%;
+   margin: auto;
+  }
+  #conThrd {
+    text-align: center;
+    background-color: Gainsboro;
+  }
+  ul {
+    text-align: initial;
+    display: inline-block;
+    padding-bottom: 51px;
+    padding-top: 44px;
+    max-width: 610px !important;
+  }
+ li {
+    text-align: center;
+    word-break: break-word;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    display:inline-block;
+    list-style: none;
+    max-width: 610px !important;
+    width: -webkit-calc(100% - 20px);
+    width: -moz-calc(100% - 20px);
+    width: calc(100% - 20px);
+    border-radius: 10px;
+    border-bottom: 5px solid RoyalBlue;
+    border-right: 2.5px solid RoyalBlue;
+  }
+  .system {
+    font-size: 18px;
+    color: black;
+    font-weight: bold;
+    font-family: 'Amatic SC', cursive;
+  }
+  .names {
+      font-weight: bold;
+      text-shadow:
+      -0.5px -0.5px 0 #fff,
+      0.5px -0.5px 0 #fff,
+      -0.5px 0.5px 0 #fff,
+      0.5px 0.5px 0 #fff;  
+  }
+  li:nth-child(even) {
+    background: LightBlue;
+  }
+  li:nth-child(odd) {
+    background: LightSkyBlue;
+  }
+  p {
+    font-size: 11px;
+  }
+  #thread {
+    margin: 0 0 0 0 !important;
+  }
+  #infobar {
+    color: white;
+    border: 1px solid black;
+    background-color: RoyalBlue;
+    padding-top: 10px;
+  }

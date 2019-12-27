@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="he">  
+    <head>
+      <meta charset="utf-8" />
+      <title>צ'אט</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="description" content="Awesome videos!" />
+      <link rel="stylesheet" href="/public/viralvideos-master/css/style.css">
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link href="https://fonts.googleapis.com/css?family=Amatic+SC" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+      <link rel="stylesheet" href="style.css" />
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+    <body dir="rtl" class="text-center">
+        <div id="infobar">
+          <p><i id="usersicon" class="fa fa-users"></i><span id="infotxt"> מחוברים: <span id = "uc">0</span><span id="typing"> .</span></span></p>
+          <div id="youtube"></div>
+        </div>
+        <div id="conThrd">
+        <ul id="thread"></ul>
+        </div>
+        <div id="results"></div>
+        <div id="end">
+          <div id="formsg">
+            <input id="color" type="color" value="#e6ffff">
+            <input id="name" type="text" placeholder="הקלד/י שם" autocomplete="off">
+            <input id="message" type="text" placeholder="הקלד/י הודעה" autocomplete="off">
+            <audio id="clickP" src="/audio/click.mp3"></audio>
+            <button id="send" type="submit"><i class="fa fa-send"></i> שלח</button>
+          </div>
+      <!-- scripts -->
+      <script src="/socket.io/socket.io.js"></script>
+      <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+      <script src="/public/viralvideos-master/js/app.js"></script>
+      <script src="https://apis.google.com/js/client.js?onload=init"></script>
+      <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+      <script src="client.js"></script>
+    </body>
+ </html>  

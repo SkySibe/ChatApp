@@ -1,0 +1,50 @@
+body { color: #262626; background: gainsboro; font-family: 'Varela Round', sans-serif;}
+header { margin-top: 30px; }
+header a { color: #262626; text-decoration: none; }
+header a:hover { text-decoration: none; }
+form { margin-top: 20px; }
+form, #results { padding: 0 20px; }
+.sendB {
+    background-color: white;
+    color: darkblue;
+}
+.sendB:hover {
+    color: white;
+    background-color: darkblue;
+}
+.sendR {
+    background-color: white;
+    color: darkred;
+}
+.sendR:hover {
+    color: white;
+    background-color: darkred;
+}
+.item { 
+    word-break: break-word;
+    display: inline-block;
+    font-family: 'Varela Round', sans-serif;
+    color: white;
+    margin-bottom: 25px;
+    border-radius: 10px;
+    max-width: 100% !important;
+    width: -webkit-calc(100% - 20px);
+    width: -moz-calc(100% - 20px);
+    width: calc(100% - 20px);
+    text-align: center;
+    padding: 5px 10px 5px 10px;
+}
+.item:nth-child(even) {
+    background: blue;
+    border-bottom: 5px solid darkred;
+    border-right: 2.5px solid darkred;
+}
+.item:nth-child(odd) {
+    background: red;
+    border-bottom: 5px solid darkblue;
+    border-right: 2.5px solid darkblue;
+}
+.w100 { width: 100%; }
+
+.btn-primary { background: royalblue; border-color: darkblue; }
+.btn-primary:hover, .btn-primary:active, .btn-primary:focus { background: lightblue;  border-color: skyblue; }
