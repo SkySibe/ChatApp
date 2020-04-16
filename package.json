@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "acorn": "^7.1.1",
     "ajax": "0.0.4",
     "body-parser": "^1.18.3",
     "ejs": "^2.6.1",
@@ -21,12 +22,17 @@
     "is-image-url": "^1.1.8",
     "is-url": "^1.2.4",
     "mdbootstrap": "^4.5.12",
+    "mixin-deep": "^2.0.1",
     "mongoose": "^5.3.4",
     "mongoose-socket.io": "^1.2.1",
+    "next": "^9.3.3",
     "request-ip": "^2.1.1",
+    "serialize-javascript": ">=2.1.1",
     "socket.io": "^2.1.1",
     "uninstall": "0.0.0",
-    "xss": "^1.0.3"
+    "xss": "^1.0.3",
+    "minimist": ">=1.2.3",
+    "kind-of": ">=6.0.3"
   },
   "devDependencies": {},
   "description": ""

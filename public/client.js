@@ -3,12 +3,12 @@ var date = new Date();
 //setting var to check if the user already chosed name and color
 var set = false;
 //array of random names if user don't pick a name
-var randomNames = ["מים קופצים","פרעה","עץ מנגו מחייך","תפוז מעצבן","אנטיוכוס","בופי","משה","שמשון","דוק","זרובבל","תפוח","אגס","בננה","חומוס","דוד","שלמה","מוחמד","ישו","יזרעאל","מלכיאל","בוריטו","מר.תפודי","גברת תפודי","נזלת","חומוס","ספגטי","עגבנייה","חציל","מללפון","מיסטר נייס גאי","אבוקדו","תפוח אדמה","צ'יפס","שטריימל","בוטנים אמריקאים","666","שטן","מלאך","אריה","נמר","גויאבה","דג","ג'קי לוי","בובספוג","פטריק","סקווידוויד","קופיקו","שושנה","גר צדק","גלדיאטור","אביר","חתול","חתולה","דר.סוס","נמלה","אנטילופה","עמוד חשמל","שיניים תותבות","ידית","פסטה","אדון שוקו","גלגל ירוק","מוכר אוגרים","דילר","קופסת הפתעות","אזדרכת","עז"];
+const randomNames = ["מים קופצים","פרעה","עץ מנגו מחייך","תפוז מעצבן","אנטיוכוס","בופי","משה","שמשון","דוק","זרובבל","תפוח","אגס","בננה","חומוס","דוד","שלמה","מוחמד","ישו","יזרעאל","מלכיאל","בוריטו","מר.תפודי","גברת תפודי","נזלת","חומוס","ספגטי","עגבנייה","חציל","מללפון","מיסטר נייס גאי","אבוקדו","תפוח אדמה","צ'יפס","שטריימל","בוטנים אמריקאים","666","שטן","מלאך","אריה","נמר","גויאבה","דג","ג'קי לוי","בובספוג","פטריק","סקווידוויד","קופיקו","שושנה","גר צדק","גלדיאטור","אביר","חתול","חתולה","דר.סוס","נמלה","אנטילופה","עמוד חשמל","שיניים תותבות","ידית","פסטה","אדון שוקו","גלגל ירוק","מוכר אוגרים","דילר","קופסת הפתעות","אזדרכת","עז"];
 //get the url that the client used to connect the server
 var url = window.location.href;
 //loading message sound file
-var newMsgAudio = new Audio('/audio/definite.mp3');
-var clickAudio = new Audio('/audio/click.mp3');
+const newMsgAudio = new Audio('/audio/definite.mp3');
+const clickAudio = new Audio('/audio/click.mp3');
 //setting the name because if user typs it's will not show undefined
 var name = "ללא שם";
 //setting color at top for scope(to use in all this file)
@@ -19,6 +19,30 @@ var replayData = "";
 var typers = [];
 //YouTubeAPI link
 var ytLink = '';
+//function fot chnging page colors
+var corentColor = 0;
+var changeColor = () => {
+    let root = document.documentElement;
+    if(corentColor == 0) {
+        corentColor++;
+        root.style.setProperty('--rb','ForestGreen');
+        root.style.setProperty('--db','DarkGreen');
+        root.style.setProperty('--lb','Chartreuse');
+        root.style.setProperty('--lsk','GreenYellow');
+    } else if (corentColor == 1) {
+        corentColor++;
+        root.style.setProperty('--rb','Red');
+        root.style.setProperty('--db','DarkRed');
+        root.style.setProperty('--lb','LightCoral');
+        root.style.setProperty('--lsk','Salmon');
+    } else {
+        corentColor = 0;
+        root.style.setProperty('--rb','RoyalBlue');
+        root.style.setProperty('--db','DarkBlue');
+        root.style.setProperty('--lb','LightBlue');
+        root.style.setProperty('--lsk','LightSkyBlue');
+    }
+}
 //setting function to send system messages
 var systemMsg = (msg, rt) => {
     socket.emit('sysmsg', msg , rt);
@@ -26,14 +50,14 @@ var systemMsg = (msg, rt) => {
 var names = [];
 var nindex = 2;
 var getRandomColor = () => {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
+    const letters = '0123456789ABCDEF';
+    let color = '#';
     for (var i = 0; i < 6; i++) {
       color += letters[Math.floor(Math.random() * 16)];
     }
     return color;
 }
-var colors = {
+const colors = {
     'כחול': '0000ff',
     'אדום': 'ff0000',
     'צהוב': 'ffff00',
@@ -56,7 +80,7 @@ var getPosition = (string, subString, index) => {
 // initializing socket, connection to server
 var socket = io.connect(url);
 systemMsg(`כל ההודעות נמחקות אחרי רענון הדף`);
-systemMsg(`שליחת תמונות אפשרית על ידי קישורים, <br> אם תרצה/י להעלות תמונה משלך השתמש/י באתר כמו <a href="http://www.interload.co.il/" target="_blank">זה</a> ,כדי להעלות תמונה ולקבל קישור. <b><br>סימני קודים:<br> </b>#תמונת טקסט {עוד: #טקסט=צהוב+כחול - רקע צהוב טקסט כחול}<br>כדי לשלוח תמונה רנדומלית:<br>@<br>כדי לחפש תמונה:<br>@מלל חיפוש<br>כדי לשלוח הודעה פרטית למישהו מסויים או כמה,<br> ניתן לכתוב בשורת ההודעות:<br>(שם של האדם הראשון,עוד שם)הודעה פה<br>כדי לשלוח הודעה לכול חוץ מאדם מסויים או כמה,<br> ניתן להשתמש בנוסח הבא:<br>[שם,עוד שם]הודעה<br>ניתן לרשום בסוגריים רק שם אחד או להוסיף כמה שרוצים.`,true);
+systemMsg(`שליחת תמונות אפשרית על ידי קישורים, <br> אם תרצה/י להעלות תמונה משלך השתמש/י באתר כמו <a href="https://postimage.org/" target="_blank">זה</a> ,כדי להעלות תמונה ולקבל קישור(הקישור צריך להיות עם סיומת jpg/.png/.gif. וכו'). <b><br>סימני קודים:<br> </b>#תמונת טקסט {עוד: #טקסט=צהוב+כחול - רקע צהוב טקסט כחול}<br>כדי לשלוח תמונה רנדומלית:<br>@<br>כדי לחפש תמונה:<br>@מלל חיפוש<br>כדי לשלוח הודעה פרטית למישהו מסויים או כמה,<br> ניתן לכתוב בשורת ההודעות:<br>(שם של האדם הראשון,עוד שם)הודעה פה<br>כדי לשלוח הודעה לכול חוץ מאדם מסויים או כמה,<br> ניתן להשתמש בנוסח הבא:<br>[שם,עוד שם]הודעה<br>ניתן לרשום בסוגריים רק שם אחד או להוסיף כמה שרוצים.`,true);
 socket.on("connect", data => {
   socket.emit("join",url);
 });
@@ -85,7 +109,7 @@ function isEven(n) {
  }
 //update user connected count from the server
 socket.on("updateCount",  usco => {
-    $("#uc").text(Math.floor(usco / 2) + "~");
+    $("#uc").text(usco);
 });
 
 //get volume and play message sound
@@ -246,7 +270,7 @@ var replay = mId => {
     }*/
     msgTxt = msgTxt.replace('center-fit','rpcn');
     
-	replayData = `<div style="height:5px;font-size:1px;">&nbsp;</div><div class="replay-div"><span class="names" style="color: ${namClr};">${nam}</span><br>${msgTxt}<div style="height:2px;font-size:1px;">&nbsp;</div></div>`;
+	replayData = `<div style="height:5px;font-size:1px;">&nbsp;</div><div class="replay-div" ><span class="names" style="color: ${namClr};">${nam}</span><br>${msgTxt}<div style="height:2px;font-size:1px;">&nbsp;</div></div>`;
 }
 var copy = (mId,str) => {
     // Create new element
@@ -286,7 +310,7 @@ socket.on('likePr', messId => {
 });
 socket.on('replay',replay = mId => {
 	var nam = $('#name-span-'+mId).text();
-	var namClr = $('#name-span-'+mId).css('color');
+    var namClr = $('#name-span-'+mId).css('color');
 	var msgTxt = $('#msg-span-'+mId).html();
     /*if (msgTxt.includes('img')) {
         var regex = /<img id="img-" src='(.*?)'/;
@@ -547,15 +571,6 @@ var sendMsg = () => {
 socket.on();
 $("#send").click(() => {
     var msgStr = $("#message").val();
-    if (msgStr.startsWith('+') && msgStr.length > 1 && msgStr.includes('=')) {
-        var vId,vTit;
-        vId = msgStr.substring(msgStr.indexOf("=") + 1, msgStr.length);
-        vTit = msgStr.substring(msgStr.indexOf("+") + 1, msgStr.indexOf("="));
-        youtubeVideoId = vTit ;
-        youtubeVideoTitle = vId;
-    } else {
-        sendMsg();
-    }
 });
 var expendedTime = num => {
     num = String(num);

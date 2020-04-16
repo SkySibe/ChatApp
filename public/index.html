@@ -17,7 +17,7 @@
     </head>
     <body dir="rtl" class="text-center">
         <div id="infobar">
-          <p><i id="usersicon" class="fa fa-users"></i><span id="infotxt"> מחוברים: <span id = "uc">0</span><span id="typing"> .</span></span></p>
+          <p><!--<button id="setlng" onclick="langos()" class="seto fa fa-globe"></button><select id="lngslct"><option value="He">עברית</option><option value="En">English</option><option value="עברית"></option><option></option></select>--><button id="setclr" class="seto fa fa-adjust" onclick="changeColor()"></button><i id="usersicon" class="fa fa-users"></i><span id="infotxt"> מחוברים: <span id = "uc">0</span><span id="typing"> .</span></span></p>
           <div id="youtube"></div>
         </div>
         <div id="conThrd">
@@ -30,7 +30,7 @@
             <input id="name" type="text" placeholder="הקלד/י שם" autocomplete="off">
             <input id="message" type="text" placeholder="הקלד/י הודעה" autocomplete="off">
             <audio id="clickP" src="/audio/click.mp3"></audio>
-            <button id="send" type="submit"><i class="fa fa-send"></i> שלח</button>
+            <button id="send" onclick="sendMsg()" type="submit"><i class="fa fa-send"></i> שלח</button>
           </div>
       <!-- scripts -->
       <script src="/socket.io/socket.io.js"></script>
