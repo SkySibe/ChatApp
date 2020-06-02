@@ -25,22 +25,40 @@ var changeColor = () => {
     let root = document.documentElement;
     if(corentColor == 0) {
         corentColor++;
-        root.style.setProperty('--rb','ForestGreen');
-        root.style.setProperty('--db','DarkGreen');
-        root.style.setProperty('--lb','Chartreuse');
-        root.style.setProperty('--lsk','GreenYellow');
+        root.style.setProperty('--rb','#ce1141');
+        root.style.setProperty('--db','#00386b');
+        root.style.setProperty('--lb','#eeb111');
+        root.style.setProperty('--lsk','#94ce08');
+        root.style.setProperty('--msgtxt','#262626');
+        root.style.setProperty('--backco','#e87d1e');
+        root.style.setProperty('--intxtco','#ce1141');
+        root.style.setProperty('--intxtnrml','#ffff4d');
+        root.style.setProperty('--intxthov','#ffff66');
+        root.style.setProperty('--intxtfo','#ffff80');
     } else if (corentColor == 1) {
         corentColor++;
-        root.style.setProperty('--rb','Red');
-        root.style.setProperty('--db','DarkRed');
-        root.style.setProperty('--lb','LightCoral');
-        root.style.setProperty('--lsk','Salmon');
+        root.style.setProperty('--rb','#ff1a1a');
+        root.style.setProperty('--db','Black');
+        root.style.setProperty('--lb','#333333');
+        root.style.setProperty('--lsk','#292929');
+        root.style.setProperty('--msgtxt','#f2f2f2');
+        root.style.setProperty('--backco','#1a1a1a');
+        root.style.setProperty('--intxtco','#e6e6e6');
+        root.style.setProperty('--intxtnrml','#404040');
+        root.style.setProperty('--intxthov','#4d4d4d');
+        root.style.setProperty('--intxtfo','#1a1a1a');
     } else {
         corentColor = 0;
         root.style.setProperty('--rb','RoyalBlue');
         root.style.setProperty('--db','DarkBlue');
         root.style.setProperty('--lb','LightBlue');
         root.style.setProperty('--lsk','LightSkyBlue');
+        root.style.setProperty('--msgtxt','#262626');
+        root.style.setProperty('--backco','Gainsboro');
+        root.style.setProperty('--intxtco','DarkBlue');
+        root.style.setProperty('--intxtnrml','gainsboro');
+        root.style.setProperty('--intxthov','lightgray');
+        root.style.setProperty('--intxtfo','mistyrose');
     }
 }
 //setting function to send system messages
@@ -394,13 +412,13 @@ var playP = (p,e) => {
 
         var msgVal = $("#message").val();
         var msgColr = document.getElementById("message");
-        if (msgVal.startsWith('+') && msgVal.length == 1) {
-            $('#youtube').css('width: 100% !important; height: 50% !important;)');
-            $('#youtube').html(`<iframe class="ui-widget-content" style="width: 100% !important; height: 50% !important; resize: vertical;" src="${url}youtube" frameborder="0" allowfullscreen></iframe>`);
-        } else {
-            $('#youtube').css('width: 0 !important; height: 0 !important;)');
-            $('#youtube').empty();
-        }
+        // if (msgVal.startsWith('+') && msgVal.length == 1) {
+        //     $('#youtube').css('width: 100% !important; height: 50% !important;)');
+        //     $('#youtube').html(`<iframe class="ui-widget-content" style="width: 100% !important; height: 50% !important; resize: vertical;" src="${url}youtube" frameborder="0" allowfullscreen></iframe>`);
+        // } else {
+        //     $('#youtube').css('width: 0 !important; height: 0 !important;)');
+        //     $('#youtube').empty();
+        // }
         if (msgVal.startsWith('[') || msgVal.startsWith('(')) {
             if (msgVal.endsWith(')') || msgVal.endsWith(']')){
                 $(msgColr).css({"background-color":"Black"});
@@ -460,8 +478,8 @@ var playP = (p,e) => {
             $(msgColr).css({"background-color":"RoyalBlue"});
             $(msgColr).css({"color":"white"});
         } else {
-            $(msgColr).css({"background-color":"gainsboro"});
-            $(msgColr).css({"color":"darkblue"});
+            $(msgColr).css({"background-color":"var(--intxtnrml)"});
+            $(msgColr).css({"color":"var(--intxtco) !important"});
         }
         //ביטול המקליד/ה... כאשר פרטי
         if(typing == false && !msgVal.startsWith('[') && !msgVal.startsWith('(')) {

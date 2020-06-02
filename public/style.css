@@ -3,19 +3,39 @@
     --db: DarkBlue;
     --lb: LightBlue;
     --lsk: LightSkyBlue;
+    --msgtxt: #262626;
+    --backco: Gainsboro;
+    --intxtco: DarkBlue;
+    --intxtnrml: gainsboro;
+    --intxthov: lightgray;
+    --intxtfo: mistyrose;
   }
   html, body,ul {
     text-align: center;
-    background-color: Gainsboro;
+    background-color: var(--backco);
   }
 
   html,body,li,#formsg,ul {
     padding: 0;
     margin: 0;
     font-family: 'Varela Round', sans-serif;
-    color: #262626;
+    color: var(--msgtxt);
   }
-
+  input[type="text"] {
+    border: 2px solid var(--intxtnrml);
+    padding-inline-start: 8px;
+    padding-inline-end: 8px;
+    background-color: var(--intxtnrml);
+    color: var(--intxtco) !important;
+  }
+  input[type="text"]:hover {
+    border: 2px solid var(--intxthov);
+    background-color: var(--intxthov);
+  }
+  input[type="text"]:focus {
+    border: 2px solid var(--db);
+    background-color: var(--intxtfo);
+  }
   @font-face {
      font-family: 'iconic-sm';
      src: url('../fonts/iconic-sm.eot');
@@ -177,21 +197,6 @@
   #hc_extension_bkgnd {
     background-color: Gainsboro;
   }
-  input[type="text"] {
-    border: 2px solid gainsboro;
-    padding-inline-start: 8px;
-    padding-inline-end: 8px;
-    background-color: gainsboro;
-    color: var(--db);
-  }
-  input[type="text"]:hover {
-    border: 2px solid lightgray;
-    background-color: lightgray;
-  }
-  input[type="text"]:focus {
-    border: 2px solid var(--db);
-    background-color: mistyrose;
-  }
   #color {
     border: 2px solid var(--db);
     width: 24px;
@@ -220,7 +225,7 @@
   }
   #conThrd {
     text-align: center;
-    background-color: Gainsboro;
+    background-color: var(--backco);
   }
   ul {
     text-align: initial;
