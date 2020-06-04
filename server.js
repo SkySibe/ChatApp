@@ -70,10 +70,26 @@ var colorNames = (name) => {
     "מגנטה": 'ff00ff',
     'כתום': 'ffa500',
     'אפור': '808080',
-    'תכלת': 'add8e6',
+    'תכלת': '3399ff',
     'זהב': 'ffd700',
     'כסף': 'c0c0c0',
-    'חום': 'a52a2a'
+    'חום': 'a52a2a',
+    'ורוד': 'ffc0cb',
+    'pink': 'ffc0cb',
+    'blue': '0000ff',
+    'red': 'ff0000',
+    'green': '008000',
+    'lime': '00ff00',
+    'violet': '800080',
+    'black': '000000',
+    'white': 'ffffff',
+    'magenta': 'ff00ff',
+    'orange': 'ffa500',
+    'gray': '808080',
+    'azure': '3399ff',
+    'gold': 'ffd700',
+    'silver': 'c0c0c0',
+    'brown': 'a52a2a'
   };
   return (colors[name] || getRandomColor());
 }
@@ -103,6 +119,12 @@ app.get("/public/audio/definite.mp3", (req, res, next) => {
 });
 app.get("/audio/click.mp3", (req, res, next) => {
   res.sendFile(__dirname + "/public/audio/click.mp3");
+});
+app.get("/language/en.json", (req, res, next) => {
+  res.sendFile(__dirname + "/public/language/en.json");
+});
+app.get("/language/he.json", (req, res, next) => {
+  res.sendFile(__dirname + "/public/language/he.json");
 });
 app.use(express.static("public"));
 io.on("connection", client => {
@@ -227,8 +249,8 @@ io.on("connection", client => {
       if (msg.includes('=') && msg.includes('+')) {
         txt = msg.split('#').pop().split('=')[0];
         txt = reverseHe(txt);
-        bc = msg.split('=').pop().split('+')[0];
-        tc = msg.substring(msg.indexOf("+") + 1, msg.length);
+        bc = msg.toLowerCase().split('=').pop().split('+')[0];
+        tc = msg.toLowerCase().substring(msg.indexOf("+") + 1, msg.length);
         bc = colorNames(bc);
         tc = colorNames(tc);
         msg = msg.replace(msg,`http://dummyimage.com/666x666/${bc}/${tc}&text=${txt}`);
@@ -277,8 +299,12 @@ io.on("connection", client => {
   client.on('replayData', replayId => {
     rp = replayData;
   });
-  client.on('sysmsg', (msg,rtl) => {
-    client.emit("sendsys", msg , rtl);
+  client.on('sysmsg', (msg) => {
+    if(msg) {
+      client.emit("sendsys", msg);
+    } else {
+      client.emit("sendsys", msg);
+    }
   });
   client.on('typing', name => {
     client.broadcast.emit('type' ,name);

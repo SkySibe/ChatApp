@@ -1,3 +1,48 @@
+//setting the page language to Hebrew by default
+var pagelang = 'he';
+//a function that switches the page language
+var setLanguage = (language) => {
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+    //if xml got the json response
+    if (this.readyState == 4 && this.status == 200) {
+        //sets a variable to the json
+        var myObj = JSON.parse(this.responseText);
+        //if language is not hebrew its switches to Left to Right yes this is kinda weird
+        if(language == 'he') {
+            document.body.dir = 'rtl';
+            document.getElementsByClassName('systema')[1].dir ="rtl";
+            document.getElementById('infobar').dir = "rtl";
+        } else {
+            document.body.dir = 'ltr';
+            document.getElementsByClassName('systema')[1].dir ="ltl";
+            document.getElementById('infobar').dir = "rtl";
+        }
+        //sets the page language to the current
+        pagelang = language;
+        //gets all elements with the tag 'data-lang' into an array
+        var dtarr = document.querySelectorAll('[data-lang]');
+        //for loop for changing every element language
+        for (const elem of dtarr){
+            //gets element label id from the tag specified
+            var label = elem.getAttribute('data-lang');
+            //another array for changing all elements with the same label id
+            var dtmultarr = document.querySelectorAll(`[data-lang="${label}"]`);
+            for(const elems of dtmultarr){
+                //finally changes the element language
+                if(elems.type == 'text'){
+                    elems.placeholder = myObj[label];
+                } else {
+                    elems.innerHTML = myObj[label];
+                }
+            }
+        }
+    }
+    };
+    //call get to the json by language
+    xmlhttp.open("GET", `/language/${language}.json`, true);
+    xmlhttp.send();
+}
 //gonna use date next
 var date = new Date();
 //setting var to check if the user already chosed name and color
@@ -114,8 +159,8 @@ var changeColor = () => {
     }
 }
 //setting function to send system messages
-var systemMsg = (msg, rt) => {
-    socket.emit('sysmsg', msg , rt);
+var systemMsg = (msg) => {
+    socket.emit('sysmsg', msg);
 }
 var names = [];
 var nindex = 2;
@@ -142,15 +187,32 @@ const colors = {
     'תכלת': '3399ff',
     'זהב': 'ffd700',
     'כסף': 'c0c0c0',
-    'חום': 'a52a2a'
+    'חום': 'a52a2a',
+    'ורוד': 'ffc0cb',
+    'pink': 'ffc0cb',
+    'blue': '0000ff',
+    'red': 'ff0000',
+    'green': '008000',
+    'lime': '00ff00',
+    'violet': '800080',
+    'black': '000000',
+    'white': 'ffffff',
+    'magenta': 'ff00ff',
+    'orange': 'ffa500',
+    'gray': '808080',
+    'azure': '3399ff',
+    'gold': 'ffd700',
+    'silver': 'c0c0c0',
+    'brown': 'a52a2a',
+    'yellow': 'ffff00'
 };
 var getPosition = (string, subString, index) => {
     return string.split(subString, index).join(subString).length;
 }
 // initializing socket, connection to server
 var socket = io.connect(url);
-systemMsg(`כל ההודעות נמחקות אחרי רענון הדף`);
-systemMsg(`שליחת תמונות אפשרית על ידי קישורים, <br> אם תרצה/י להעלות תמונה משלך השתמש/י באתר כמו <a href="https://postimage.org/" target="_blank">זה</a> ,כדי להעלות תמונה ולקבל קישור(הקישור צריך להיות עם סיומת jpg/.png/.gif. וכו'). <b><br>סימני קודים:<br> </b>#תמונת טקסט {עוד: #טקסט=צהוב+כחול - רקע צהוב טקסט כחול}<br>כדי לשלוח תמונה רנדומלית:<br>@<br>כדי לחפש תמונה:<br>@מלל חיפוש<br>כדי לשלוח הודעה פרטית למישהו מסויים או כמה,<br> ניתן לכתוב בשורת ההודעות:<br>(שם של האדם הראשון,עוד שם)הודעה פה<br>כדי לשלוח הודעה לכול חוץ מאדם מסויים או כמה,<br> ניתן להשתמש בנוסח הבא:<br>[שם,עוד שם]הודעה<br>ניתן לרשום בסוגריים רק שם אחד או להוסיף כמה שרוצים.`,true);
+systemMsg(true);
+systemMsg(false);
 socket.on("connect", data => {
   socket.emit("join",url);
 });
@@ -163,12 +225,14 @@ socket.on('nameList', nameList => {
     names = nameList;
 });
 //system message function
-socket.on("sendsys", (msg , rtl) => {
- if (rtl) {
-  $("#thread").append(`<li dir="rtl"><span class="system">מערכת</span><br>${msg}<br> <span style="font-size: 10px;">${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}</span> </li>`);
- } else {
-  $("#thread").append(`<li dir="ltr"><span class="system">מערכת</span><br>${msg}<br> <span style="font-size: 10px;">${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}</span> </li>`);
- }
+socket.on("sendsys", (msg) => {
+    if (msg) {
+        $("#thread").append(`<li class="systema" dir="rtl"><span class="system" data-lang="system">מערכת</span><br><span data-lang="firstsysmsg"></span><br> <span style="font-size: 10px;">${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}</span> </li>`);
+        setLanguage(pagelang);
+    } else {
+        $("#thread").append(`<li class="systema" dir="rtl"><span class="system" data-lang="system">מערכת</span><br><span data-lang="secondsysmsg"></span><br> <span style="font-size: 10px;">${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}</span> </li>`);
+        setLanguage(pagelang);
+    }
 });
 function isEven(n) {
     return n % 2 == 0;
@@ -195,17 +259,6 @@ var urlify = text => {
         return `<a target="_blank" rel="noopener noreferrer" href="${url}">${url.replace("http://","").replace("https://","").replace(/\/$/,"")}</a>`;
     })
 }
-socket.on('upVid', link => {
-    ytLink = link;
-});
-var youtubeVideoId = '00000000000';
-var youtubeVideoTitle = 'NULL';
-/*socket.on('upIdT' , (id,title) => {
-    console.log(`ID: ${id} | Title: ${title}`);
-    youtubeVideoId = id;
-    youtubeVideoTitle = title;
-});*/
-// listener for 'thread' event, which updates messages
 socket.on("thread", (color, name, msg, rtl, type, you, msgid, replayData,tocopy,tit,id) => {
     if (type == 'ifr' && id !== null) {
         msg = `<h1>${tit}</h1><br><iframe value="${id}}" class="video w100" width="640" height="360" src="//www.youtube.com/embed/${id}" frameborder="0" allowfullscreen></iframe>`;
@@ -257,9 +310,11 @@ socket.on("thread", (color, name, msg, rtl, type, you, msgid, replayData,tocopy,
         }
         //if name of a color in message
         for (let i = 0; i < Object.keys(colors).length; i++) {
-            if (msg.includes(Object.keys(colors)[i])) {
-                let re = new RegExp(Object.keys(colors)[i], "g");
-                msg = msg.replace(re,`<span style="color: #${Object.values(colors)[i]}">${Object.keys(colors)[i]}</span>`);
+            if (msg.toLowerCase().includes(Object.keys(colors)[i])) {
+                let inco = msg.toLowerCase().indexOf(Object.keys(colors)[i]);
+                let ts = msg.substring(inco,inco + Object.keys(colors)[i].length);
+                let re = new RegExp(Object.keys(colors)[i], "ig");
+                msg = msg.replace(re,`<span style="color: #${Object.values(colors)[i]}">${ts}</span>`);
             }
         }
         //צבע מזמן צבע רנדומלי לגמרי ואקראי מהרשימה של השמות של הצבעים

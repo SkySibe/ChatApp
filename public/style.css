@@ -27,6 +27,23 @@
     font-family: 'Varela Round', sans-serif;
     color: var(--msgtxt);
   }
+  .languageSwitch {
+    float: left;
+    border: 2px solid var(--db);
+    background-color: var(--db);
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    width: 60px;
+    height: 30px;
+    border-radius: 16px;
+    margin-left: 5px;
+  }
+  .languageSwitch:hover {
+    background-color: white;
+    color: var(--db);
+    text-decoration: none;
+  }
   input[type="text"] {
     border: 2px solid var(--intxtnrml);
     padding-inline-start: 8px;
@@ -76,6 +93,12 @@
   }
   #infotxt {
     font-weight: bold;
+    position:fixed;
+    padding-top: 5px;
+  }
+  #usersicon, #typing{
+    position: relative;
+    padding: 2px;
   }
   #infobar {
     width: 100%;
@@ -84,6 +107,9 @@
     border-bottom: 1px solid var(--bordertbf);
     background-color: var(--rb);
     padding-top: 10px;
+  }
+  #infobarp {
+    display: inline;
   }
   .copy {
     top: 20px;
