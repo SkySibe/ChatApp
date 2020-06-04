@@ -8,7 +8,10 @@ var io = require("socket.io")(server);
 var nameAndId = {};
 var messagesAndId = {};
 var likesAndId = {};
-var port = 80;
+var port = process.env.PORT;
+if (port == null || port == "") {
+  port = 80;
+}
 var requestIp = require('request-ip');
 
 var os = require('os');
@@ -23,7 +26,7 @@ var countIp = 0;
 io.on('connection', client => {
     if (client) {
       count++;
-      console.log("User connected, user count: " + count + " | " + client);
+      console.log("User connected, user count: " + count );
       io.emit("updateCount", count);
       countIp = ips.length;
     }
@@ -33,7 +36,7 @@ io.on('connection', client => {
       delete nameAndId[id];
       count--;
       io.emit("updateCount", count);
-    	console.log("User disconnected, user count: " + count + " | " + client);
+    	console.log("User disconnected, user count: " + count );
       countIp = ips.length;
       //io.emit("updateCount", countIp);
     });

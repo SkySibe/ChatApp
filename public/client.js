@@ -457,17 +457,25 @@ socket.on('replay',replay = mId => {
 });
 socket.on('type', name => {
 	typers.push(name);
-	var theTypes = typers.join(', ');
-	$('#typing').text(` ,${theTypes} מקליד/ה...`);
+    var theTypes = typers.join(', ');
+    if(pagelang == 'he') {
+        $('#typing').text(`${theTypes} מקליד/ה...`);
+    } else {
+        $('#typing').text(`${theTypes} typing...`);
+    }
 });
 
 socket.on('stype', name => {
 	typers.splice(typers.indexOf(name),1);
 	if (typers.length <= 0) {
-		$('#typing').text(' .');
+		$('#typing').text('');
 	} else {
 		var theTypes = typers.join(', ');
-		$('#typing').text(` ,${theTypes} מקליד/ה...`);
+		if(pagelang == 'he') {
+            $('#typing').text(`${theTypes} מקליד/ה...`);
+        } else {
+            $('#typing').text(`${theTypes} typing...`);
+        }
 	}
 });
 
@@ -675,6 +683,8 @@ var sendMsg = () => {
         $("#message").css("cssText",'width: -webkit-calc(70% - 10px) !important; width: -moz-calc(70% - 10px) !important; width: calc(70% - 10px) !important;');
         set = true;
     }
+    $(msgColr).css("background-color", "");
+    $(msgColr).css("color", "");
 }
 socket.on();
 $("#send").click(() => {
