@@ -89,7 +89,8 @@ var colorNames = (name) => {
     'azure': '3399ff',
     'gold': 'ffd700',
     'silver': 'c0c0c0',
-    'brown': 'a52a2a'
+    'brown': 'a52a2a',
+    'yellow': 'ffff00'
   };
   return (colors[name] || getRandomColor());
 }

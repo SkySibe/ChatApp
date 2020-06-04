@@ -3,7 +3,8 @@
     --db: DarkBlue;
     --lb: LightBlue;
     --lsk: LightSkyBlue;
-    --msgtxt: #262626;
+    --lbmsgtxt: #262626;
+    --lskmsgtxt: #262626;
     --backco: Gainsboro;
     --intxtco: #101010;
     --intxtnrml: gainsboro;
@@ -25,7 +26,6 @@
     padding: 0;
     margin: 0;
     font-family: 'Varela Round', sans-serif;
-    color: var(--msgtxt);
   }
   .languageSwitch {
     float: left;
@@ -184,15 +184,6 @@
   input:focus,#send:focus {
     outline: none;
   }
-  /*#lngslct {
-    visibility: visible;
-    float: right;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    display: inline-block;
-    text-align: center;
-    text-decoration: none;
-  }*/
   .seto {
     float: right;
     border: 2px solid var(--db);
@@ -298,9 +289,11 @@
   }
   li:nth-child(even) {
     background: var(--lb);
+    color: var(--lbmsgtxt);
   }
   li:nth-child(odd) {
     background: var(--lsk);
+    color: var(--lskmsgtxt);
   }
   p {
     font-size: 11px;

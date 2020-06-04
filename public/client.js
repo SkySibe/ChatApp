@@ -72,13 +72,14 @@ var changeProperty = (vr,colr) => {
 var corentColor = 0;
 var changeColor = () => {
     switch(corentColor) {
-        case 2:
+        case 4:
             corentColor++;
             changeProperty('--rb','#ce1141');
             changeProperty('--db','#00386b');
             changeProperty('--lb','#eeb111');
             changeProperty('--lsk','#94ce08');
-            changeProperty('--msgtxt','#262626');
+            changeProperty('--lbmsgtxt','#262626');
+            changeProperty('--lskmsgtxt','#262626');
             changeProperty('--backco','#e87d1e');
             changeProperty('--intxtco','#101010');
             changeProperty('--intxtnrml','#ffff4d');
@@ -95,7 +96,8 @@ var changeColor = () => {
             changeProperty('--db','Black');
             changeProperty('--lb','#333333');
             changeProperty('--lsk','#292929');
-            changeProperty('--msgtxt','#f2f2f2');
+            changeProperty('--lbmsgtxt','#f2f2f2');
+            changeProperty('--lskmsgtxt','#f2f2f2');
             changeProperty('--backco','#1a1a1a');
             changeProperty('--intxtco','#dddddd');
             changeProperty('--intxtnrml','#404040');
@@ -112,7 +114,8 @@ var changeColor = () => {
             changeProperty('--db', 'DarkCyan');
             changeProperty('--lb', 'Linen');
             changeProperty('--lsk', 'whitesmoke');
-            changeProperty('--msgtxt', '#262626');
+            changeProperty('--lbmsgtxt','#262626');
+            changeProperty('--lskmsgtxt','#262626');
             changeProperty('--backco', '#d9d9d9');
             changeProperty('--intxtco', '');
             changeProperty('--intxtnrml', '');
@@ -129,7 +132,8 @@ var changeColor = () => {
             changeProperty('--db', 'CornflowerBlue');
             changeProperty('--lb', '#3399ff');
             changeProperty('--lsk', '#0066ff');
-            changeProperty('--msgtxt', '#262626');
+            changeProperty('--lbmsgtxt','#262626');
+            changeProperty('--lskmsgtxt','#262626');
             changeProperty('--backco', 'BurlyWood');
             changeProperty('--intxtco', '');
             changeProperty('--intxtnrml', 'SkyBlue');
@@ -140,13 +144,32 @@ var changeColor = () => {
             changeProperty('--infobartxt', 'CornflowerBlue');
             changeProperty('--bordertbf', 'DarkBlue');
             break;
+        case 2:
+            corentColor++;
+            changeProperty('--rb', '#0d0d0d');
+            changeProperty('--db', 'RoyalBlue');
+            changeProperty('--lb', 'PowderBlue');
+            changeProperty('--lsk', 'DarkSlateGray');
+            changeProperty('--lbmsgtxt','#262626');
+            changeProperty('--lskmsgtxt','#fafafa');
+            changeProperty('--backco','#1a1a1a');
+            changeProperty('--intxtco','#dddddd');
+            changeProperty('--intxtnrml','#404040');
+            changeProperty('--intxthov','#4d4d4d');
+            changeProperty('--intxtfo','#1a1a1a');
+            changeProperty('--bordrmsg', 'Black');
+            changeProperty('--replaybackground', 'gray');
+            changeProperty('--infobartxt', '#e6e6e6');
+            changeProperty('--bordertbf', '#1a1a1a');
+            break;
         default:
             corentColor = 0;
             changeProperty('--rb','RoyalBlue');
             changeProperty('--db','DarkBlue');
             changeProperty('--lb','LightBlue');
             changeProperty('--lsk','LightSkyBlue');
-            changeProperty('--msgtxt','#262626');
+            changeProperty('--lbmsgtxt','#262626');
+            changeProperty('--lskmsgtxt','#262626');
             changeProperty('--backco','Gainsboro');
             changeProperty('--intxtco','#101010');
             changeProperty('--intxtnrml','gainsboro');
