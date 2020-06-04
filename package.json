@@ -25,7 +25,7 @@
     "mdbootstrap": "^4.19.0",
     "minimist": ">=1.2.5",
     "mixin-deep": "^2.0.1",
-    "mongoose": "^5.9.17",
+    "mongoose": "^5.7.5",
     "mongoose-socket.io": "^1.2.1",
     "next": "^9.4.4",
     "request-ip": "^2.1.3",
