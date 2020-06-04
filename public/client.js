@@ -20,45 +20,97 @@ var typers = [];
 //YouTubeAPI link
 var ytLink = '';
 //function fot chnging page colors
+var changeProperty = (vr,colr) => {
+    let root = document.documentElement;
+    root.style.setProperty(vr,colr);
+}
 var corentColor = 0;
 var changeColor = () => {
-    let root = document.documentElement;
-    if(corentColor == 0) {
-        corentColor++;
-        root.style.setProperty('--rb','#ce1141');
-        root.style.setProperty('--db','#00386b');
-        root.style.setProperty('--lb','#eeb111');
-        root.style.setProperty('--lsk','#94ce08');
-        root.style.setProperty('--msgtxt','#262626');
-        root.style.setProperty('--backco','#e87d1e');
-        root.style.setProperty('--intxtco','#ce1141');
-        root.style.setProperty('--intxtnrml','#ffff4d');
-        root.style.setProperty('--intxthov','#ffff66');
-        root.style.setProperty('--intxtfo','#ffff80');
-    } else if (corentColor == 1) {
-        corentColor++;
-        root.style.setProperty('--rb','#ff1a1a');
-        root.style.setProperty('--db','Black');
-        root.style.setProperty('--lb','#333333');
-        root.style.setProperty('--lsk','#292929');
-        root.style.setProperty('--msgtxt','#f2f2f2');
-        root.style.setProperty('--backco','#1a1a1a');
-        root.style.setProperty('--intxtco','#e6e6e6');
-        root.style.setProperty('--intxtnrml','#404040');
-        root.style.setProperty('--intxthov','#4d4d4d');
-        root.style.setProperty('--intxtfo','#1a1a1a');
-    } else {
-        corentColor = 0;
-        root.style.setProperty('--rb','RoyalBlue');
-        root.style.setProperty('--db','DarkBlue');
-        root.style.setProperty('--lb','LightBlue');
-        root.style.setProperty('--lsk','LightSkyBlue');
-        root.style.setProperty('--msgtxt','#262626');
-        root.style.setProperty('--backco','Gainsboro');
-        root.style.setProperty('--intxtco','DarkBlue');
-        root.style.setProperty('--intxtnrml','gainsboro');
-        root.style.setProperty('--intxthov','lightgray');
-        root.style.setProperty('--intxtfo','mistyrose');
+    switch(corentColor) {
+        case 2:
+            corentColor++;
+            changeProperty('--rb','#ce1141');
+            changeProperty('--db','#00386b');
+            changeProperty('--lb','#eeb111');
+            changeProperty('--lsk','#94ce08');
+            changeProperty('--msgtxt','#262626');
+            changeProperty('--backco','#e87d1e');
+            changeProperty('--intxtco','#101010');
+            changeProperty('--intxtnrml','#ffff4d');
+            changeProperty('--intxthov','#ffff66');
+            changeProperty('--intxtfo','#ffff80');
+            changeProperty('--bordrmsg','#00386b');
+            changeProperty('--replaybackground','#ffff4d');
+            changeProperty('--infobartxt', 'WhiteSmoke');
+            changeProperty('--bordertbf', 'Black');
+            break;
+        case 1 :
+            corentColor++;
+            changeProperty('--rb','DarkSlateGray');
+            changeProperty('--db','Black');
+            changeProperty('--lb','#333333');
+            changeProperty('--lsk','#292929');
+            changeProperty('--msgtxt','#f2f2f2');
+            changeProperty('--backco','#1a1a1a');
+            changeProperty('--intxtco','#dddddd');
+            changeProperty('--intxtnrml','#404040');
+            changeProperty('--intxthov','#4d4d4d');
+            changeProperty('--intxtfo','#1a1a1a');
+            changeProperty('--bordrmsg','Black');
+            changeProperty('--replaybackground','#404040');
+            changeProperty('--infobartxt', 'WhiteSmoke');
+            changeProperty('--bordertbf', 'Silver');
+            break;
+        case 0:
+            corentColor++;
+            changeProperty('--rb', '#f3f3f3');
+            changeProperty('--db', 'DarkCyan');
+            changeProperty('--lb', 'Linen');
+            changeProperty('--lsk', 'whitesmoke');
+            changeProperty('--msgtxt', '#262626');
+            changeProperty('--backco', '#d9d9d9');
+            changeProperty('--intxtco', '');
+            changeProperty('--intxtnrml', '');
+            changeProperty('--intxthov', '');
+            changeProperty('--intxtfo', '');
+            changeProperty('--bordrmsg', 'Silver');
+            changeProperty('--replaybackground', '');
+            changeProperty('--infobartxt', 'DarkCyan');
+            changeProperty('--bordertbf', '#bfbfbf');
+            break;
+        case 3:
+            corentColor++;
+            changeProperty('--rb', 'Aquamarine');
+            changeProperty('--db', 'CornflowerBlue');
+            changeProperty('--lb', '#3399ff');
+            changeProperty('--lsk', '#0066ff');
+            changeProperty('--msgtxt', '#262626');
+            changeProperty('--backco', 'BurlyWood');
+            changeProperty('--intxtco', '');
+            changeProperty('--intxtnrml', 'SkyBlue');
+            changeProperty('--intxthov', '#9bd6ee');
+            changeProperty('--intxtfo', '');
+            changeProperty('--bordrmsg', 'Blue');
+            changeProperty('--replaybackground', 'LightBlue');
+            changeProperty('--infobartxt', 'CornflowerBlue');
+            changeProperty('--bordertbf', 'DarkBlue');
+            break;
+        default:
+            corentColor = 0;
+            changeProperty('--rb','RoyalBlue');
+            changeProperty('--db','DarkBlue');
+            changeProperty('--lb','LightBlue');
+            changeProperty('--lsk','LightSkyBlue');
+            changeProperty('--msgtxt','#262626');
+            changeProperty('--backco','Gainsboro');
+            changeProperty('--intxtco','#101010');
+            changeProperty('--intxtnrml','gainsboro');
+            changeProperty('--intxthov','lightgray');
+            changeProperty('--intxtfo','mistyrose');
+            changeProperty('--bordrmsg','RoyalBlue');
+            changeProperty('--replaybackground','Gainsboro');
+            changeProperty('--infobartxt', 'WhiteSmoke');
+            changeProperty('--bordertbf', 'Black');
     }
 }
 //setting function to send system messages
@@ -276,16 +328,6 @@ var replay = mId => {
 	var nam = $('#name-span-'+mId).text();
 	var namClr = $('#name-span-'+mId).css('color');
 	var msgTxt = $('#msg-span-'+mId).html();
-    /*if (msgTxt.includes('img')) {
-        var regex = /<img id="img-" src='(.*?)'/;
-        var src = regex.exec(msgTxt)[1];
-        var img = document.getElementById('img-'+mId);
-            if (img.src === src) {
-                console.log("Same image");
-            } else {
-                console.log("Diffrent image");
-            }
-    }*/
     msgTxt = msgTxt.replace('center-fit','rpcn');
     
 	replayData = `<div style="height:5px;font-size:1px;">&nbsp;</div><div class="replay-div" ><span class="names" style="color: ${namClr};">${nam}</span><br>${msgTxt}<div style="height:2px;font-size:1px;">&nbsp;</div></div>`;
@@ -330,16 +372,6 @@ socket.on('replay',replay = mId => {
 	var nam = $('#name-span-'+mId).text();
     var namClr = $('#name-span-'+mId).css('color');
 	var msgTxt = $('#msg-span-'+mId).html();
-    /*if (msgTxt.includes('img')) {
-        var regex = /<img id="img-" src='(.*?)'/;
-        var src = regex.exec(msgTxt)[1];
-        var img = document.getElementById('img-'+mId);
-            if (img.src === src) {
-                console.log("Same image");
-            } else {
-                console.log("Diffrent image");
-            }
-    }*/
     msgTxt = msgTxt.replace('center-fit','rpcn');
     
 	replayData = `<div style="height:5px;font-size:1px;">&nbsp;</div><div class="replay-div"><span class="names" style="color: ${namClr};">${nam}</span><br>${msgTxt}<div style="height:2px;font-size:1px;">&nbsp;</div></div>`;
@@ -379,20 +411,6 @@ var timeoutFunction = () => {
 }
 //פונקציה כדאי לעשות רעש של קליקים שמקלידים
 var playP = (p,e) => {
-    //youtube api
-    /*if (e !== 107) {
-        e.preventDefault();
-        //prepare the request
-        var request = gapi.client.youtube.search.list({
-            part: "snippet",
-            type: "video",
-            q: encodeURIComponent(msgVal.replace(/%20/g), "+"),
-            maxResult: 7,
-            order: "viewCount",
-            publishedAfter: "2015-01-01T"
-
-        });
-    }*/
     var audio = document.getElementById('clickP');
     audio.volume = 0.5;
     if (audio.paused) {
@@ -412,13 +430,6 @@ var playP = (p,e) => {
 
         var msgVal = $("#message").val();
         var msgColr = document.getElementById("message");
-        // if (msgVal.startsWith('+') && msgVal.length == 1) {
-        //     $('#youtube').css('width: 100% !important; height: 50% !important;)');
-        //     $('#youtube').html(`<iframe class="ui-widget-content" style="width: 100% !important; height: 50% !important; resize: vertical;" src="${url}youtube" frameborder="0" allowfullscreen></iframe>`);
-        // } else {
-        //     $('#youtube').css('width: 0 !important; height: 0 !important;)');
-        //     $('#youtube').empty();
-        // }
         if (msgVal.startsWith('[') || msgVal.startsWith('(')) {
             if (msgVal.endsWith(')') || msgVal.endsWith(']')){
                 $(msgColr).css({"background-color":"Black"});
@@ -471,15 +482,17 @@ var playP = (p,e) => {
             }
             $(msgColr).css({"background-color":"black"});
             $(msgColr).css({"color":"white"});
-        } else if (msgVal.startsWith('#') || msgVal.startsWith('+') || msgVal.startsWith('@')) {
+        } else if (msgVal.startsWith('#') || msgVal.startsWith('@')) {
             $(msgColr).css({"background-color":"black"});
             $(msgColr).css({"color":"white"});
         } else if (msgVal.startsWith('http://') || msgVal.startsWith('https://')) {
             $(msgColr).css({"background-color":"RoyalBlue"});
             $(msgColr).css({"color":"white"});
         } else {
-            $(msgColr).css({"background-color":"var(--intxtnrml)"});
-            $(msgColr).css({"color":"var(--intxtco) !important"});
+            $(msgColr).css("background-color", "");
+            $(msgColr).css("color", "");
+            // $(msgColr).css({"background-color":"var(--intxtnrml)"});
+            // $(msgColr).css({"color":"var(--intxtfo)"});
         }
         //ביטול המקליד/ה... כאשר פרטי
         if(typing == false && !msgVal.startsWith('[') && !msgVal.startsWith('(')) {
@@ -492,7 +505,6 @@ var playP = (p,e) => {
         }
         if (e.keyCode == 13) {//enter
             sendMsg();
-            //$('#message').val(msgVal + '<br>');
         }
         //מאפשר לעלות ולרדת עם החצים כדי לטעון הודעות קודמות
         if (e.keyCode == 40) {//down
@@ -581,7 +593,7 @@ var sendMsg = () => {
     if (!set) {
         $("#name").remove();
         $("#color").remove();
-        $("#send").css("cssText",`width: -webkit-calc(30% - 10px) !important; width: -moz-calc(30% - 10px) !important; width: calc(30% - 10px) !important;`);
+        $("#send").css("cssText",`width: -webkit-calc(30% - 10px) !imortant; width: -moz-calc(30% - 10px) !important; width: calc(30% - 10px) !important;`);
         $("#message").css("cssText",'width: -webkit-calc(70% - 10px) !important; width: -moz-calc(70% - 10px) !important; width: calc(70% - 10px) !important;');
         set = true;
     }

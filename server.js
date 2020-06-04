@@ -98,22 +98,6 @@ app.get("/", (req, res, next) => {
   newip = getIp(req);
   res.sendFile(__dirname + "/public/index.html");
 });
-app.get("/youtube/", (req, res, next) => {
-  newip = getIp(req);
-  res.sendFile(__dirname + "/public/viralvideos-master/index.html");
-});
-app.get("/public/viralvideos-master/css/style.css", (req, res, next) => {
-  newip = getIp(req);
-  res.sendFile(__dirname + "/public/viralvideos-master/css/style.css");
-});
-app.get("/public/viralvideos-master/js/app.js", (req, res, next) => {
-  newip = getIp(req);
-  res.sendFile(__dirname + "/public/viralvideos-master/js/app.js");
-});
-app.get("/public/viralvideos-master/tpl/item.html", (req, res, next) => {
-  newip = getIp(req);
-  res.sendFile(__dirname + "/public/viralvideos-master/tpl/item.html");
-});
 app.get("/public/audio/definite.mp3", (req, res, next) => {
   res.sendFile(__dirname + "/public/audio/definite.mp3");
 });
@@ -255,8 +239,6 @@ io.on("connection", client => {
       }
       imgapi = true;
     }
-    var youtubeVideoId;
-    var youtubeVideoTitle;
     if (msg.startsWith("/מערכת/")) {
       msg = msg.slice(7,msg.length);
       if (hl.length >= el.length || el == 0 && hl !== 0) {
@@ -269,18 +251,6 @@ io.on("connection", client => {
       sendType('img',false);
     } else if (isUrl(msg)) {
       sendType('url',false);
-    } else if (msg.startsWith("+")) {
-      if (msg.includes('=')) {
-        var vId,vTit;
-        vTit = msg.substring(msg.indexOf("=") + 1, msg.length);
-        vId = msg.substring(msg.indexOf("+") + 1, msg.indexOf("="));
-        youtubeVideoId = vTit ;
-        youtubeVideoTitle = vId;
-        console.log(`ID: ${youtubeVideoId} | Title: ${youtubeVideoTitle}`);
-      }
-      if (msg.length > 9) {
-        sendType('ifr',false,youtubeVideoTitle,youtubeVideoId);
-      }
 } else if (msg.startsWith("/קוד/")) {
       msg = msg.slice(5,msg.length);
       sendType('code',false);

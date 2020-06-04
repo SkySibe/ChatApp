@@ -5,16 +5,22 @@
     --lsk: LightSkyBlue;
     --msgtxt: #262626;
     --backco: Gainsboro;
-    --intxtco: DarkBlue;
+    --intxtco: #101010;
     --intxtnrml: gainsboro;
     --intxthov: lightgray;
     --intxtfo: mistyrose;
+    --bordrmsg: RoyalBlue;
+    --replaybackground: gainsboro;
+    --infobartxt: whitesmoke;
+    --bordertbf: black;
   }
   html, body,ul {
     text-align: center;
     background-color: var(--backco);
   }
-
+  ul {
+    background-color: var(--backco);
+  }
   html,body,li,#formsg,ul {
     padding: 0;
     margin: 0;
@@ -26,7 +32,7 @@
     padding-inline-start: 8px;
     padding-inline-end: 8px;
     background-color: var(--intxtnrml);
-    color: var(--intxtco) !important;
+    color: var(--intxtco);
   }
   input[type="text"]:hover {
     border: 2px solid var(--intxthov);
@@ -62,7 +68,7 @@
     position:fixed;
     width: 100%;
     height: 46px;
-    border: 1px solid black;
+    border-top: 1px solid var(--bordertbf);
     background-color: var(--rb);
   }
   #usersicon {
@@ -74,8 +80,8 @@
   #infobar {
     width: 100%;
     position:fixed;
-    color: white;
-    border: 1px solid black;
+    color: var(--infobartxt);
+    border-bottom: 1px solid var(--bordertbf);
     background-color: var(--rb);
     padding-top: 10px;
   }
@@ -102,9 +108,9 @@
     margin: auto;
     font-size: 12px;
     border-radius: 10px;
-    background-color: PowderBlue;
-    border-bottom: 2px solid var(--rb);
-    border-right: 1px solid var(--rb);
+    background-color: var(--replaybackground);
+    border-bottom: 2px solid var(--bordrmsg);
+    border-right: 1px solid var(--bordrmsg);
     max-width: 600px !important;
     width: -webkit-calc(100% - 10px);
     width: -moz-calc(100% - 10px);
@@ -247,8 +253,8 @@
     width: -moz-calc(100% - 20px);
     width: calc(100% - 20px);
     border-radius: 10px;
-    border-bottom: 5px solid var(--rb);
-    border-right: 2.5px solid var(--rb);
+    border-bottom: 5px solid var(--bordrmsg);
+    border-right: 2.5px solid var(--bordrmsg);
   }
   .system {
     font-size: 18px;
@@ -275,7 +281,4 @@
   }
   #thread {
     margin: 0 0 0 0 !important;
-  }
-  .replay-div {
-    background-color: gainsboro;
   }
