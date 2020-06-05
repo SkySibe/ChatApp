@@ -11,11 +11,17 @@ var setLanguage = (language) => {
         //if language is not hebrew its switches to Left to Right yes this is kinda weird
         if(language == 'he') {
             document.body.dir = 'rtl';
-            document.getElementsByClassName('systema')[1].dir ="rtl";
+            let syseList = document.getElementsByClassName('systema');
+            for(let element of syseList) {
+                element.dir ="rtl";
+            }
             document.getElementById('infobar').dir = "rtl";
         } else {
             document.body.dir = 'ltr';
-            document.getElementsByClassName('systema')[1].dir ="ltl";
+            let syseList = document.getElementsByClassName('systema');
+            for(let element of syseList) {
+                element.dir ="ltr";
+            }
             document.getElementById('infobar').dir = "rtl";
         }
         //sets the page language to the current

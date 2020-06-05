@@ -333,10 +333,12 @@ io.on("connection", client => {
     }
   });
   client.on('typing', name => {
-    if(Object.keys(io.sockets.adapter.sids[client.id])[1] == 'main') {
-      client.broadcast.to('main').emit('type' ,name);
-    } else {
-      client.broadcast.to(Object.keys(io.sockets.adapter.sids[client.id])[0]).emit('type' ,name);
+    if(nameAndId[client.id] == name || name === 'ללא שם') {
+      if(Object.keys(io.sockets.adapter.sids[client.id])[1] == 'main') {
+        client.broadcast.to('main').emit('type' ,name);
+      } else {
+        client.broadcast.to(Object.keys(io.sockets.adapter.sids[client.id])[0]).emit('type' ,name);
+      }
     }
   });
   client.on('stopType', name => {
@@ -355,7 +357,7 @@ io.on("connection", client => {
     } else {
       io.emit("likePu",mseId);
       client.emit("likePr",mseId);
-      likesAndId[id] = mseId;
+      likesAndId[mseId] = id;
     }
   });
   client.on('trash', mseId => {
