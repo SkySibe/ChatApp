@@ -2,9 +2,11 @@
     "title": "Chat",
     "system": "System",
     "firstsysmsg": "All the chat messages will get deleted after refreshing the website",
-    "secondsysmsg": "Sending images is possible by links,<br>if you would like to upload your own image use a website like <a href=\"https://postimage.org/\" target=\"_blank\">this</a>, in order to upload an image and get a link<br>(Note: the link has to be with the ending of .gif or .png or .jpg ect.).<br>*Code Keys*<br>#Text Image (examples: ' #text=yellow+red ' will output yellow background with red text).<br>If you wish to send a random image just send:<br>@<br>For searching an image:<br>@search keywords<br>In order to send a private message for someone or more,<br>send to chat the following(with your own arguments):<br>(name of somone,another name)and the text right here,<br>Pretty much the same is for sending a message to everyone exept someone or more,<br>you could use the following formula:<br>[name of someone that you don't want him to see the message,another name]the text of your message.<br>You can insert one name to the brackets or as many as you would like.<br>",
+    "secondsysmsg": "Sending images is possible by links,<br>if you would like to upload your own image use a website like <a href=\"https://postimage.org/\" target=\"_blank\">this</a>, in order to upload an image and get a link<br>(Note: the link has to be with the ending of .gif or .png or .jpg ect.).<br>*Code Keys*<br>#Text Image (examples: ' #text=yellow+red ' will output yellow background with red text).<br>If you wish to send a random image just send:<br>@<br>For searching an image:<br>@search keywords<br>In order to send a private message for someone or more,<br>send to chat the following(with your own arguments):<br>(name of somone,another name)and the text right here,<br>Pretty much the same is for sending a message to everyone exept someone or more,<br>you could use the following formula:<br>[name of someone that you don't want him to see the message,another name]the text of your message.<br>You can insert one name to the brackets or as many as you would like.<br>In order to join into a room just send a message with {}<br> and the name of the room inside just like this: {roomName}<br>By default any user is in a room named $<br>So in order to return to the main room just send {$}.",
     "msgph": "Type a message here...",
     "nameph": "Type a name here...",
     "send": "Send <i class=\"fa fa-send\"></i>",
-    "connects": " Connected: "
+    "connects": " Connected: ",
+    "joindRoom": "You have just joined to the room: ",
+    "createdRoom": "You have created and joined to the room: "
 }

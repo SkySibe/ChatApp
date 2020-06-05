@@ -239,6 +239,15 @@ systemMsg(false);
 socket.on("connect", data => {
   socket.emit("join",url);
 });
+var room = 'main';
+var joinToRoom = (roomname) => {
+    socket.emit('create', roomname);
+    room = roomname;
+}
+joinToRoom('$');
+socket.on('connectToRoom',function(data) {
+    console.log(data);
+});
 if ($(window).width() < 340) {
     //remove text and show only icon on button on small screens
     $('#send').html('<i class="fa fa-send"></i>');
@@ -249,15 +258,20 @@ socket.on('nameList', nameList => {
 });
 var fsys = true;
 //system message function
-socket.on("sendsys", (msg) => {
+socket.on("sendsys", (msg,par) => {
     if(fsys){
-        if (msg) {
+        if (msg && par===null) {
+            console.log(par);
             $("#thread").append(`<li class="systema" dir="rtl"><span class="system" data-lang="system">מערכת</span><br><span data-lang="firstsysmsg"></span><br> <span style="font-size: 10px;">${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}</span> </li>`);
             setLanguage(pagelang);
-        } else {
+        } else if(msg===false && par===null){
+            console.log(par);
             $("#thread").append(`<li class="systema" dir="rtl"><span class="system" data-lang="system">מערכת</span><br><span data-lang="secondsysmsg"></span><br> <span style="font-size: 10px;">${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}</span> </li>`);
             setLanguage(pagelang);
-            fsys = false;
+        } else {
+            console.log(msg+par);
+            $("#thread").append(`<li class="systema" dir="rtl"><span class="system" data-lang="system">מערכת</span><br><span data-lang="${msg}"></span><span>${par}</span><br> <span style="font-size: 10px;">${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}</span> </li>`);
+            setLanguage(pagelang);
         }
     }
 });
@@ -521,8 +535,8 @@ var msgColr = document.getElementById("message");
 
         var msgVal = $("#message").val();
         msgColr = document.getElementById("message");
-        if (msgVal.startsWith('[') || msgVal.startsWith('(')) {
-            if (msgVal.endsWith(')') || msgVal.endsWith(']')){
+        if (msgVal.startsWith('[') || msgVal.startsWith('(') || msgVal.startsWith('{')) {
+            if (msgVal.endsWith(')') || msgVal.endsWith(']') || msgVal.endsWith('}')) {
                 $(msgColr).css({"background-color":"Black"});
                 $(msgColr).css({"color":"Lime"});
                 if (msgVal.startsWith('(')) {
@@ -586,7 +600,7 @@ var msgColr = document.getElementById("message");
             // $(msgColr).css({"color":"var(--intxtfo)"});
         }
         //ביטול המקליד/ה... כאשר פרטי
-        if(typing == false && !msgVal.startsWith('[') && !msgVal.startsWith('(')) {
+        if(typing == false && !msgVal.startsWith('[') && !msgVal.startsWith('(') && !msgVal.startsWith('{')) {
             typing = true;
             socket.emit('typing',name);
             timeout = setTimeout(timeoutFunction, 1000);
@@ -662,6 +676,10 @@ var sendMsg = () => {
             alert("You can't send an empty message");
         }
         return false;
+    } else if (msgVal.startsWith('{') && msgVal.endsWith('}')){
+        var roomName = msgVal.split('{').pop().split('}')[0];
+        joinToRoom(roomName);
+        $("#message").val('');
     } else {
         socket.emit('messages',color ,name ,message,replayData);
         $("#message").val('');

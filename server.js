@@ -131,7 +131,32 @@ app.get("/language/he.json", (req, res, next) => {
   res.sendFile(__dirname + "/public/language/he.json");
 });
 app.use(express.static("public"));
+var roomes = ['$'];
+var roomno = 1;
 io.on("connection", client => {
+  client.join(roomes[0]);
+  console.log(`Client: ${client.id} ,in room: main.`);
+  client.on('create', function(room) {
+    room = room.toString();
+    console.log(`Clients in room ${room}: ${io.sockets.in(room)}`);
+    if(roomes.includes(room)){
+      client.leaveAll();
+      client.join(room);
+      client.emit('connectToRoom', "You are in room: "+room);
+      client.emit("sendsys","joindRoom", room);
+      io.sockets.in(Object.keys(io.sockets.adapter.sids[client.id])[0]).emit('connectToRoom','Another one joined the room.')
+    } else {
+      client.leaveAll();
+      roomes.push(room);
+      console.log(`New room has been created: ${room}, All the rooms ${JSON.stringify(roomes)}.`);
+      client.join(room);
+      io.sockets.in(room).emit('connectToRoom', "You are in room: "+room);
+      client.emit("sendsys","createdRoom", room);
+      roomno++;
+    }
+    console.log(`Client joined room: ${room}.`);
+    console.log(Object.keys(io.sockets.adapter.sids[client.id])[0]);
+  });
   io.emit('upNindex',nindex);
   io.emit('nameList',Object.values(nameAndId));
   console.log("Client connected...");
@@ -197,11 +222,15 @@ io.on("connection", client => {
             io.to(privateMsg[i]).emit("thread", color, name, msg, heb, type, false, messageId, reply, copy,tit,id);
           }
       } else {
-          client.broadcast.emit("sound", 1);
-          client.broadcast.emit("thread", color, name, msg, heb, type, false, messageId, reply, copy,tit,id);
+        if(Object.keys(io.sockets.adapter.sids[client.id])[1] == 'main') {
+          client.broadcast.to('main').emit("sound", 1);
+          client.broadcast.to('main').emit("thread", color, name, msg, heb, type, false, messageId, reply, copy,tit,id);
+        } else {
+          client.broadcast.to(Object.keys(io.sockets.adapter.sids[client.id])[0]).emit("sound", 1);
+          client.broadcast.to(Object.keys(io.sockets.adapter.sids[client.id])[0]).emit("thread", color, name, msg, heb, type, false, messageId, reply, copy,tit,id)
+        }
       }
-        client.emit("thread", color, name, msg, heb, type, true, messageId, reply, copy,tit,id);
-    
+      client.emit("thread", color, name, msg, heb, type, true, messageId, reply, copy,tit,id);
     }
     
     if (msg.startsWith('(')) {
@@ -297,17 +326,25 @@ io.on("connection", client => {
     rp = replayData;
   });
   client.on('sysmsg', (msg) => {
-    if(msg) {
-      client.emit("sendsys", msg);
-    } else {
-      client.emit("sendsys", msg);
+    if(msg===true) {
+      client.emit("sendsys", msg,null);
+    } else if(msg===false) {
+      client.emit("sendsys", msg,null);
     }
   });
   client.on('typing', name => {
-    client.broadcast.emit('type' ,name);
+    if(Object.keys(io.sockets.adapter.sids[client.id])[1] == 'main') {
+      client.broadcast.to('main').emit('type' ,name);
+    } else {
+      client.broadcast.to(Object.keys(io.sockets.adapter.sids[client.id])[0]).emit('type' ,name);
+    }
   });
   client.on('stopType', name => {
-    client.broadcast.emit('stype' ,name);
+    if(Object.keys(io.sockets.adapter.sids[client.id])[1] == 'main') {
+      client.broadcast.to('main').emit('stype' ,name);
+    } else {
+      client.broadcast.to(Object.keys(io.sockets.adapter.sids[client.id])[0]).emit('stype' ,name);
+    }
   });
   client.on('like', mseId => {
     let id = client.id;
