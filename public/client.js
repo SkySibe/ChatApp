@@ -247,14 +247,18 @@ if ($(window).width() < 340) {
 socket.on('nameList', nameList => {
     names = nameList;
 });
+var fsys = true;
 //system message function
 socket.on("sendsys", (msg) => {
-    if (msg) {
-        $("#thread").append(`<li class="systema" dir="rtl"><span class="system" data-lang="system">מערכת</span><br><span data-lang="firstsysmsg"></span><br> <span style="font-size: 10px;">${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}</span> </li>`);
-        setLanguage(pagelang);
-    } else {
-        $("#thread").append(`<li class="systema" dir="rtl"><span class="system" data-lang="system">מערכת</span><br><span data-lang="secondsysmsg"></span><br> <span style="font-size: 10px;">${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}</span> </li>`);
-        setLanguage(pagelang);
+    if(fsys){
+        if (msg) {
+            $("#thread").append(`<li class="systema" dir="rtl"><span class="system" data-lang="system">מערכת</span><br><span data-lang="firstsysmsg"></span><br> <span style="font-size: 10px;">${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}</span> </li>`);
+            setLanguage(pagelang);
+        } else {
+            $("#thread").append(`<li class="systema" dir="rtl"><span class="system" data-lang="system">מערכת</span><br><span data-lang="secondsysmsg"></span><br> <span style="font-size: 10px;">${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}</span> </li>`);
+            setLanguage(pagelang);
+            fsys = false;
+        }
     }
 });
 function isEven(n) {
@@ -509,13 +513,14 @@ var playP = (p,e) => {
         audio.play();
     }
 }
+var msgColr = document.getElementById("message");
     //כאשר נלחץ אות
     $("#message").keyup(e => {
         //ניגון צליל הקלדה
         playP(clickAudio,e);
 
         var msgVal = $("#message").val();
-        var msgColr = document.getElementById("message");
+        msgColr = document.getElementById("message");
         if (msgVal.startsWith('[') || msgVal.startsWith('(')) {
             if (msgVal.endsWith(')') || msgVal.endsWith(']')){
                 $(msgColr).css({"background-color":"Black"});
@@ -650,8 +655,12 @@ var sendMsg = () => {
         msgI = msgArr.length;
         console.log('i: '+msgI);
     }
-    if (message == "" || !message.replace(/\s/g, '').length) {
-        alert("אין לשלוח הודעה ריקה");
+    if (message == "" || !message.replace(/\s/g, '').length || message.replace(`(${message.split('(').pop().split(')')[0]})`,'') == '' || message.replace(`[${message.split('[').pop().split(']')[0]}]`,'') == '') {
+        if(pagelang == 'he') {
+            alert("אין לשלוח הודעה ריקה");
+        } else {
+            alert("You can't send an empty message");
+        }
         return false;
     } else {
         socket.emit('messages',color ,name ,message,replayData);
