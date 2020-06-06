@@ -218,8 +218,10 @@ io.on("connection", client => {
       }
       if(privateMsg.length > 0) {
           for (let i = 0; i < privateMsg.length; i++) {
-            io.to(privateMsg[i]).emit("sound", 1);
-            io.to(privateMsg[i]).emit("thread", color, name, msg, heb, type, false, messageId, reply, copy,tit,id);
+            if(privateMsg[i] !== client.id) {
+              io.sockets.connected[ privateMsg[i] ].emit("sound", 1);
+              io.sockets.connected[ privateMsg[i] ].emit("thread", color, name, msg, heb, type, false, messageId, reply, copy,tit,id);
+            }
           }
       } else {
         if(Object.keys(io.sockets.adapter.sids[client.id])[1] == 'main') {
