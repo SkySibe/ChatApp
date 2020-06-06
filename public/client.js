@@ -252,7 +252,7 @@ var joinToRoom = (roomname) => {
 }
 joinToRoom('$');
 socket.on('connectToRoom',function(data) {
-    console.log(data);
+    
 });
 if ($(window).width() < 340) {
     //remove text and show only icon on button on small screens
@@ -267,15 +267,15 @@ var fsys = true;
 socket.on("sendsys", (msg,par) => {
     if(fsys){
         if (msg && par===null) {
-            console.log(par);
+            
             $("#thread").append(`<li class="systema" dir="rtl"><span class="system" data-lang="system">מערכת</span><br><span data-lang="firstsysmsg"></span><br> <span style="font-size: 10px;">${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}</span> </li>`);
             setLanguage(pagelang);
         } else if(msg===false && par===null){
-            console.log(par);
+            
             $("#thread").append(`<li class="systema" dir="rtl"><span class="system" data-lang="system">מערכת</span><br><span data-lang="secondsysmsg"></span><br> <span style="font-size: 10px;">${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}</span> </li>`);
             setLanguage(pagelang);
         } else {
-            console.log(msg+par);
+            
             $("#thread").append(`<li class="systema" dir="rtl"><span class="system" data-lang="system">מערכת</span><br><span data-lang="${msg}"></span><span>${par}</span><br> <span style="font-size: 10px;">${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}</span> </li>`);
             setLanguage(pagelang);
         }
@@ -291,6 +291,9 @@ function isEven(n) {
 //update user connected count from the server
 socket.on("updateCount",  usco => {
     $("#uc").text(usco);
+});
+socket.on("updateRoom", urco =>{
+    $("#rc").text(urco);
 });
 
 //get volume and play message sound
@@ -395,7 +398,7 @@ socket.on("thread", (color, name, msg, rtl, type, you, msgid, replayData,tocopy,
                 recombinedStr += `<span style="color: #${Object.values(colors)[Number(rndm)]}">${split[i]}</span>`;
                 count++;
             }
-            console.log(recombinedStr);
+            
             return recombinedStr;
         });
         msg = result;
@@ -508,6 +511,11 @@ socket.on('upNindex', i => {
 
     nindex = i;
 });
+
+socket.on('updateD', () => {
+    
+    socket.emit('updateRc');
+});
 var msgVal = $("#message").val();
 var msgArr = ['#ברוך הבא !=3399ff+000099'];
 var msgI = 0;
@@ -559,8 +567,8 @@ var msgColr = document.getElementById("message");
                         $(msgColr).css({"background-color":"black"});
                         $(msgColr).css({"color":"white"});
                     }
-                    console.log(names);
-                    console.log(mayName);    
+                    
+                    
                     if (mayName.length >= 0) {
                         for (var i = 0; i < names.length; i++) {
                             let re = new RegExp(names[i], "g");
@@ -581,8 +589,8 @@ var msgColr = document.getElementById("message");
                         $(msgColr).css({"background-color":"black"});
                         $(msgColr).css({"color":"white"});
                     }
-                    console.log(names);
-                    console.log(mayName);    
+                    
+                    
                     if (mayName.length >= 0) {
                         for (var i = 0; i < names.length; i++) {
                             let re = new RegExp(names[i], "g");
@@ -621,23 +629,23 @@ var msgColr = document.getElementById("message");
         if (e.keyCode == 40) {//down
             if (msgI >= 0 && msgArr.length >= msgI) {
                 $("#message").val(msgArr[msgI]);
-                console.log("Index "+msgI);
+                
                 msgI--;
             } else {
                 msgI = msgArr.length - 1;
                 $("#message").val(msgArr[msgI]);
-                console.log("Index "+msgI);
+                
                 msgI--;
             }
         } else if (e.keyCode == 38) {//up
             if (msgI >= 0 && msgArr.length > msgI) {
                 $("#message").val(msgArr[msgI]);
-                console.log("Index "+msgI);
+                
                 msgI++;
             } else {
                 msgI = 0;
                 $("#message").val(msgArr[msgI]);
-                console.log("Index "+msgI);
+                
                 msgI++;
             }
         }
@@ -654,10 +662,10 @@ var sendMsg = () => {
         $("#name").text(name);
         }
         if (names.indexOf(name) > -1) {
-        console.log('this name is already exist');
+        
         socket.emit('updateI');
         name = name + String(nindex);
-        console.log('yournew name');
+        
         }
         name = name.replace(/</g, "&lt;").replace(/>/g, "&gt;");
         if($("#color").val() == "#e6ffff") {
@@ -673,7 +681,7 @@ var sendMsg = () => {
         msgArr.push(String(msgVal));
         console.table(msgArr);
         msgI = msgArr.length;
-        console.log('i: '+msgI);
+        
     }
     if (message == "" || !message.replace(/\s/g, '').length || message.replace(`(${message.split('(').pop().split(')')[0]})`,'') == '' || message.replace(`[${message.split('[').pop().split(']')[0]}]`,'') == '') {
         if(pagelang == 'he') {
@@ -691,11 +699,11 @@ var sendMsg = () => {
         $("#message").val('');
         replayData = "";
     }
-    console.log(date.getHours()+''+date.getMinutes());
+    
     var expendedMinutes = expendedTime(date.getMinutes());
     var expendedHours = expendedTime(date.getHours());
     var time = expendedHours +''+ expendedMinutes
-    console.log(time);
+    
     if (!set) {
         if (time >= 500 && time <= 1200) {
          systemMsg(`בוקר טוב ${name} !` , true);

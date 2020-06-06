@@ -96,7 +96,11 @@
     position:fixed;
     padding-top: 5px;
   }
-  #usersicon, #typing{
+  #typing {
+    font-weight: bold;
+    position: fixed;
+  }
+  #usersicon{
     position: relative;
     padding: 2px;
   }

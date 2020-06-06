@@ -12,8 +12,7 @@ let port = process.env.PORT;
 if (port == null || port == "") {
   port = 80;
 }
-let requestIp = require('request-ip');
-
+//client.handshake.address
 let os = require('os');
 let hostname = os.hostname();
 let messageId = 0;
@@ -32,6 +31,7 @@ io.on('connection', client => {
     }
     //io.emit("updateCount", countIp);
     client.on('disconnect', () => {
+      io.emit('updateD');
       let id = client.id;
       delete nameAndId[id];
       count--;
@@ -135,21 +135,29 @@ var roomes = ['$'];
 var roomno = 1;
 io.on("connection", client => {
   client.join(roomes[0]);
-  console.log(`Client: ${client.id} ,in room: main.`);
+  console.log(`Client: ${client.id} ,in room: $`);
   client.on('create', function(room) {
     room = room.toString();
-    console.log(`Clients in room ${room}: ${io.sockets.in(room)}`);
+    io.of('/').in(room).clients(function(error,clients){
+      console.log(`Clients in room ${room} | ${clients.length}`);;
+    });
     if(roomes.includes(room)){
       client.leaveAll();
       client.join(room);
+      io.of('/').in(Object.keys(io.sockets.adapter.sids[client.id])[0]).clients(function(error,clients){
+        io.emit('updateRoom',clients.length);
+      });
       client.emit('connectToRoom', "You are in room: "+room);
       client.emit("sendsys","joindRoom", room);
-      io.sockets.in(Object.keys(io.sockets.adapter.sids[client.id])[0]).emit('connectToRoom','Another one joined the room.')
+      io.sockets.in(Object.keys(io.sockets.adapter.sids[client.id])[0]).emit('connectToRoom','Another one joined the room.');
     } else {
       client.leaveAll();
       roomes.push(room);
       console.log(`New room has been created: ${room}, All the rooms ${JSON.stringify(roomes)}.`);
       client.join(room);
+      io.of('/').in(Object.keys(io.sockets.adapter.sids[client.id])[0]).clients(function(error,clients){
+        io.emit('updateRoom',clients.length);
+      });
       io.sockets.in(room).emit('connectToRoom', "You are in room: "+room);
       client.emit("sendsys","createdRoom", room);
       roomno++;
@@ -224,9 +232,9 @@ io.on("connection", client => {
             }
           }
       } else {
-        if(Object.keys(io.sockets.adapter.sids[client.id])[1] == 'main') {
-          client.broadcast.to('main').emit("sound", 1);
-          client.broadcast.to('main').emit("thread", color, name, msg, heb, type, false, messageId, reply, copy,tit,id);
+        if(Object.keys(io.sockets.adapter.sids[client.id])[1] == '$') {
+          client.broadcast.to('$').emit("sound", 1);
+          client.broadcast.to('$').emit("thread", color, name, msg, heb, type, false, messageId, reply, copy,tit,id);
         } else {
           client.broadcast.to(Object.keys(io.sockets.adapter.sids[client.id])[0]).emit("sound", 1);
           client.broadcast.to(Object.keys(io.sockets.adapter.sids[client.id])[0]).emit("thread", color, name, msg, heb, type, false, messageId, reply, copy,tit,id)
@@ -375,6 +383,11 @@ io.on("connection", client => {
     nindex++;
     io.emit('upNindex',nindex);
   });
+  client.on('updateRc', () => {
+    io.of('/').in(Object.keys(io.sockets.adapter.sids[client.id])[0]).clients(function(error,clients){
+      io.emit('updateRoom',clients.length);
+    });
+  });
 });
-console.log(`Server running on: ${addresses[0]}:${port}`);
+console.log(`Server running on: ${addresses[0]}:${port} | ${hostname}`);
 server.listen(port);
