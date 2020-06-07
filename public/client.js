@@ -16,13 +16,15 @@ var setLanguage = (language) => {
                 element.dir ="rtl";
             }
             document.getElementById('infobar').dir = "rtl";
+            document.getElementById('languageSwitcher').onclick = () => {setLanguage('en')};
         } else {
             document.body.dir = 'ltr';
             let syseList = document.getElementsByClassName('systema');
             for(let element of syseList) {
                 element.dir ="ltr";
             }
-            document.getElementById('infobar').dir = "rtl";
+            document.getElementById('infobar').dir = "ltr";
+            document.getElementById('languageSwitcher').onclick = () => {setLanguage('he')};
         }
         //sets the page language to the current
         pagelang = language;

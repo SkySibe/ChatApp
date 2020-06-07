@@ -8,5 +8,6 @@
     "send": "Send <i class=\"fa fa-send\"></i>",
     "connects": " Connected: ",
     "joindRoom": "You have just joined to the room: ",
-    "createdRoom": "You have created and joined to the room: "
+    "createdRoom": "You have created and joined to the room: ",
+    "inRoom": " ,in room: "
 }

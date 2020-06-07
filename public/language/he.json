@@ -8,5 +8,6 @@
     "send": "שלח <i class=\"fa fa-send\"></i>",
     "connects": " מחוברים: ",
     "joindRoom": "הצטרפת לחדר: ",
-    "createdRoom": "יצרת והצטרפת לחדר: "
+    "createdRoom": "יצרת והצטרפת לחדר: ",
+    "inRoom": " ,בחדר: "
 }
