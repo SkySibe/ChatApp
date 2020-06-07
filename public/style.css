@@ -89,21 +89,18 @@
     border-top: 1px solid var(--bordertbf);
     background-color: var(--rb);
   }
-  #usersicon {
-    font-size: 16px;
-  }
   #infotxt {
     font-weight: bold;
-    position:fixed;
-    padding-top: 5px;
+    text-align: center;
   }
   #typing {
-    font-weight: bold;
     position: fixed;
+    left: 0;
+    right: 0;
   }
   #usersicon{
-    position: relative;
     padding: 2px;
+    font-size: 16px;
   }
   #infobar {
     width: 100%;
