@@ -1,305 +1,305 @@
-  :root {
-    --rb: RoyalBlue;
-    --db: DarkBlue;
-    --lb: LightBlue;
-    --lsk: LightSkyBlue;
-    --lbmsgtxt: #262626;
-    --lskmsgtxt: #262626;
-    --backco: Gainsboro;
-    --intxtco: #101010;
-    --intxtnrml: gainsboro;
-    --intxthov: lightgray;
-    --intxtfo: mistyrose;
-    --bordrmsg: RoyalBlue;
-    --replaybackground: gainsboro;
-    --infobartxt: whitesmoke;
-    --bordertbf: black;
-  }
-  html, body,ul {
-    text-align: center;
-    background-color: var(--backco);
-  }
-  ul {
-    background-color: var(--backco);
-  }
-  html,body,li,#formsg,ul {
-    padding: 0;
-    margin: 0;
-    font-family: 'Varela Round', sans-serif;
-  }
-  .languageSwitch {
-    float: left;
-    border: 2px solid var(--db);
-    background-color: var(--db);
-    color: white;
-    text-decoration: none;
-    font-size: 16px;
-    width: 30px;
-    height: 30px;
-    border-radius: 16px;
-    margin-left: 10px;
-    margin-bottom: 10px;
-  }
-  .languageSwitch:hover {
-    background-color: white;
-    color: var(--db);
-    text-decoration: none;
-  }
-  input[type="text"] {
-    border: 2px solid var(--intxtnrml);
-    padding-inline-start: 8px;
-    padding-inline-end: 8px;
-    background-color: var(--intxtnrml);
-    color: var(--intxtco);
-  }
-  input[type="text"]:hover {
-    border: 2px solid var(--intxthov);
-    background-color: var(--intxthov);
-  }
-  input[type="text"]:focus {
-    border: 2px solid var(--db);
-    background-color: var(--intxtfo);
-  }
-  @font-face {
-     font-family: 'iconic-sm';
-     src: url('../fonts/iconic-sm.eot');
-  }
-  #reslts {
-    width: 100%;
-    height: 100%;
-  }
-  /*#record {
-    background-color: lightgray;
-  }
-  #record:hover {
-    background-color: gainsboro;
-  }*/
-  #name {
-    width: 27vw;
-  }
+:root {
+  --rb: RoyalBlue;
+  --db: DarkBlue;
+  --lb: LightBlue;
+  --lsk: LightSkyBlue;
+  --lbmsgtxt: #262626;
+  --lskmsgtxt: #262626;
+  --backco: Gainsboro;
+  --intxtco: #101010;
+  --intxtnrml: gainsboro;
+  --intxthov: lightgray;
+  --intxtfo: mistyrose;
+  --bordrmsg: RoyalBlue;
+  --replaybackground: gainsboro;
+  --infobartxt: whitesmoke;
+  --bordertbf: black;
+}
+html, body,ul {
+  text-align: center;
+  background-color: var(--backco);
+}
+ul {
+  background-color: var(--backco);
+}
+html,body,li,#formsg,ul {
+  padding: 0;
+  margin: 0;
+  font-family: 'Varela Round', sans-serif;
+}
+.confs{
+  float: left;
+  border: 2px solid var(--db);
+  background-color: var(--db);
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  width: 30px;
+  height: 30px;
+  border-radius: 16px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+.confs:hover {
+  background-color: white;
+  color: var(--db);
+  text-decoration: none;
+}
+.sets {
+  float: left;
+  border: 2px solid var(--db);
+  background-color: var(--db);
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+  width: 30px;
+  height: 30px;
+  border-radius: 16px;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  display: none;
+}
+.sets:hover {
+  background-color: white;
+  color: var(--db);
+  text-decoration: none;
+}
+input[type="text"] {
+  border: 2px solid var(--intxtnrml);
+  padding-inline-start: 8px;
+  padding-inline-end: 8px;
+  background-color: var(--intxtnrml);
+  color: var(--intxtco);
+}
+input[type="text"]:hover {
+  border: 2px solid var(--intxthov);
+  background-color: var(--intxthov);
+}
+input[type="text"]:focus {
+  border: 2px solid var(--db);
+  background-color: var(--intxtfo);
+}
+@font-face {
+   font-family: 'iconic-sm';
+   src: url('../fonts/iconic-sm.eot');
+}
+#reslts {
+  width: 100%;
+  height: 100%;
+}
+/*#record {
+  background-color: lightgray;
+}
+#record:hover {
+  background-color: gainsboro;
+}*/
+#name {
+  width: 27vw;
+}
 
-  #message {
-    width: 33vw ;
-  }
-  #formsg {
-    bottom: 0;
-    position:fixed;
-    width: 100%;
-    height: 46px;
-    border-top: 1px solid var(--bordertbf);
-    background-color: var(--rb);
-  }
-  #infotxt {
+#message {
+  width: 33vw ;
+}
+#formsg {
+  bottom: 0;
+  position:fixed;
+  width: 100%;
+  height: 46px;
+  border-top: 1px solid var(--bordertbf);
+  background-color: var(--rb);
+}
+#infotxt {
+  font-weight: bold;
+  text-align: center;
+}
+#typing {
+  position: fixed;
+  left: 0;
+  right: 0;
+}
+#usersicon{
+  padding: 2px;
+  font-size: 16px;
+}
+#infobar {
+  width: 100%;
+  position:fixed;
+  color: var(--infobartxt);
+  border-bottom: 1px solid var(--bordertbf);
+  background-color: var(--rb);
+  padding-top: 10px;
+}
+#infobarp {
+  display: inline;
+}
+.copy {
+  top: 20px;
+  right: 20px;
+  background-color: white;
+  border-top: 2px solid cyan;
+  border-left: 2px solid CornflowerBlue;
+  border-bottom: 2px solid cyan;
+  border-right: 2px solid CornflowerBlue;
+  color: black;
+  border-radius: 50%;
+}
+.copy:hover {
+  color: white;
+  background-color: black;
+  border-top: 2px solid CornflowerBlue;
+  border-left: 2px solid cyan;
+  border-bottom: 2px solid CornflowerBlue;
+  border-right: 2px solid cyan;
+}
+.replay-div {
+  margin: auto;
+  font-size: 12px;
+  border-radius: 10px;
+  background-color: var(--replaybackground);
+  border-bottom: 2px solid var(--bordrmsg);
+  border-right: 1px solid var(--bordrmsg);
+  max-width: 600px !important;
+  width: -webkit-calc(100% - 10px);
+  width: -moz-calc(100% - 10px);
+  width: calc(100% - 10px);
+}
+.replay-btn {
+  color: DarkGreen;
+  background-color: white;
+  border-radius: 50%;
+}
+.replay-btn:hover {
+  color: white;
+  background-color: DarkGreen;
+}
+.trash-btn {
+  color: DarkBlue;
+  background-color: white;
+  border-radius: 50%;
+}
+.trash-btn:hover {
+  color: white;
+  background-color: DarkBlue;
+}
+.like-btn {
+  color: Red;
+  background-color: white;
+  border-radius: 10px;
+}
+.like-btn:hover {
+  color: white;
+  background-color: red;
+}
+.p-like {
+  color: Red;
+  font-size: 16px;
+  margin: 0 0 0 0 !important;
+  padding: 0 0 0 0 !important;
+}
+input {
+  margin-top: 9px !important;
+  font-family: 'Varela Round', sans-serif;
+  border-radius: 16px;
+  border: 0;
+}
+input:focus,#send:focus {
+  outline: none;
+}
+#send {
+  border: 2px solid var(--db);
+  background-color: var(--db);
+  color: white;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 16px;
+  display: inline-block;
+  width: 20vw ;
+}
+#send:hover {
+  background-color: white;
+  color: var(--db);
+}
+#hc_extension_bkgnd {
+  background-color: Gainsboro;
+}
+#color {
+  border: 2px solid var(--db);
+  width: 24px;
+  background-color: var(--db);
+}
+#color:hover {
+  background-color: white;
+}
+.imgbox {
+ display: grid;
+ height: 100%;
+}
+.center-fit {
+ max-width: 60%;
+ max-height: 60vh;
+ min-width: 20%;
+ min-height: 20vh;
+ margin: auto;
+}
+.rpcn {
+ max-width: 30%;
+ max-height: 30%;
+ min-width: 20%;
+ min-height: 20%;
+ margin: auto;
+}
+#conThrd {
+  text-align: center;
+  background-color: var(--backco);
+}
+ul {
+  text-align: initial;
+  display: inline-block;
+  padding-bottom: 51px;
+  padding-top: 44px;
+  max-width: 610px !important;
+}
+li {
+  text-align: center;
+  word-break: break-word;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  display:inline-block;
+  list-style: none;
+  max-width: 610px !important;
+  width: -webkit-calc(100% - 20px);
+  width: -moz-calc(100% - 20px);
+  width: calc(100% - 20px);
+  border-radius: 10px;
+  border-bottom: 5px solid var(--bordrmsg);
+  border-right: 2.5px solid var(--bordrmsg);
+}
+.system {
+  font-size: 18px;
+  color: black;
+  font-weight: bold;
+  font-family: 'Amatic SC', cursive;
+}
+.names {
     font-weight: bold;
-    text-align: center;
-  }
-  #typing {
-    position: fixed;
-    left: 0;
-    right: 0;
-  }
-  #usersicon{
-    padding: 2px;
-    font-size: 16px;
-  }
-  #infobar {
-    width: 100%;
-    position:fixed;
-    color: var(--infobartxt);
-    border-bottom: 1px solid var(--bordertbf);
-    background-color: var(--rb);
-    padding-top: 10px;
-  }
-  #infobarp {
-    display: inline;
-  }
-  .copy {
-    top: 20px;
-    right: 20px;
-    background-color: white;
-    border-top: 2px solid cyan;
-    border-left: 2px solid CornflowerBlue;
-    border-bottom: 2px solid cyan;
-    border-right: 2px solid CornflowerBlue;
-    color: black;
-    border-radius: 50%;
-  }
-  .copy:hover {
-    color: white;
-    background-color: black;
-    border-top: 2px solid CornflowerBlue;
-    border-left: 2px solid cyan;
-    border-bottom: 2px solid CornflowerBlue;
-    border-right: 2px solid cyan;
-  }
-  .replay-div {
-    margin: auto;
-    font-size: 12px;
-    border-radius: 10px;
-    background-color: var(--replaybackground);
-    border-bottom: 2px solid var(--bordrmsg);
-    border-right: 1px solid var(--bordrmsg);
-    max-width: 600px !important;
-    width: -webkit-calc(100% - 10px);
-    width: -moz-calc(100% - 10px);
-    width: calc(100% - 10px);
-  }
-  .replay-btn {
-    color: DarkGreen;
-    background-color: white;
-    border-radius: 50%;
-  }
-  .replay-btn:hover {
-    color: white;
-    background-color: DarkGreen;
-  }
-  .trash-btn {
-    color: DarkBlue;
-    background-color: white;
-    border-radius: 50%;
-  }
-  .trash-btn:hover {
-    color: white;
-    background-color: DarkBlue;
-  }
-  .like-btn {
-    color: Red;
-    background-color: white;
-    border-radius: 10px;
-  }
-  .like-btn:hover {
-    color: white;
-    background-color: red;
-  }
-  .p-like {
-    color: Red;
-    font-size: 16px;
-    margin: 0 0 0 0 !important;
-    padding: 0 0 0 0 !important;
-  }
-  input {
-    margin-top: 9px !important;
-    font-family: 'Varela Round', sans-serif;
-    border-radius: 16px;
-    border: 0;
-  }
-  input:focus,#send:focus {
-    outline: none;
-  }
-  .seto {
-    float: right;
-    border: 2px solid var(--db);
-    background-color: var(--db);
-    color: white;
-    display: inline-block;
-    text-align: center;
-    text-decoration: none;
-    font-size: 20px;
-    width: 30px;
-    height: 30px;
-    border-radius: 16px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-  }
-  .seto:hover {
-    background-color: white;
-    color: var(--db);
-  }
-  #send {
-    border: 2px solid var(--db);
-    background-color: var(--db);
-    color: white;
-    text-align: center;
-    text-decoration: none;
-    border-radius: 16px;
-    display: inline-block;
-    width: 20vw ;
-  }
-  #send:hover {
-    background-color: white;
-    color: var(--db);
-  }
-  #hc_extension_bkgnd {
-    background-color: Gainsboro;
-  }
-  #color {
-    border: 2px solid var(--db);
-    width: 24px;
-    background-color: var(--db);
-  }
-  #color:hover {
-    background-color: white;
-  }
-  .imgbox {
-   display: grid;
-   height: 100%;
-  }
-  .center-fit {
-   max-width: 60%;
-   max-height: 60vh;
-   min-width: 20%;
-   min-height: 20vh;
-   margin: auto;
-  }
-  .rpcn {
-   max-width: 30%;
-   max-height: 30%;
-   min-width: 20%;
-   min-height: 20%;
-   margin: auto;
-  }
-  #conThrd {
-    text-align: center;
-    background-color: var(--backco);
-  }
-  ul {
-    text-align: initial;
-    display: inline-block;
-    padding-bottom: 51px;
-    padding-top: 44px;
-    max-width: 610px !important;
-  }
- li {
-    text-align: center;
-    word-break: break-word;
-    margin-top: 10px;
-    margin-left: 10px;
-    margin-right: 10px;
-    display:inline-block;
-    list-style: none;
-    max-width: 610px !important;
-    width: -webkit-calc(100% - 20px);
-    width: -moz-calc(100% - 20px);
-    width: calc(100% - 20px);
-    border-radius: 10px;
-    border-bottom: 5px solid var(--bordrmsg);
-    border-right: 2.5px solid var(--bordrmsg);
-  }
-  .system {
-    font-size: 18px;
-    color: black;
-    font-weight: bold;
-    font-family: 'Amatic SC', cursive;
-  }
-  .names {
-      font-weight: bold;
-      text-shadow:
-      -0.5px -0.5px 0 #fff,
-      0.5px -0.5px 0 #fff,
-      -0.5px 0.5px 0 #fff,
-      0.5px 0.5px 0 #fff;  
-  }
-  li:nth-child(even) {
-    background: var(--lb);
-    color: var(--lbmsgtxt);
-  }
-  li:nth-child(odd) {
-    background: var(--lsk);
-    color: var(--lskmsgtxt);
-  }
-  p {
-    font-size: 11px;
-  }
-  #thread {
-    margin: 0 0 0 0 !important;
-  }
+    text-shadow:
+    -0.5px -0.5px 0 #fff,
+    0.5px -0.5px 0 #fff,
+    -0.5px 0.5px 0 #fff,
+    0.5px 0.5px 0 #fff;  
+}
+li:nth-child(even) {
+  background: var(--lb);
+  color: var(--lbmsgtxt);
+}
+li:nth-child(odd) {
+  background: var(--lsk);
+  color: var(--lskmsgtxt);
+}
+p {
+  font-size: 11px;
+}
+#thread {
+  margin: 0 0 0 0 !important;
+}

@@ -17,8 +17,10 @@
     <body dir="rtl" class="text-center">
         <div id="infobar">
           <p id="infobarp">
-            <a id="languageSwitcher" class="languageSwitch" href="#" onclick="setLanguage('en')"><i id="langIcon" class="fa fa-globe"></i></a>
-            <button id="setclr" class="seto fa fa-adjust" onclick="changeColor()"></button>
+            <a id="config" class="confs" href="javascript:void(0);" onclick="cogs()"><i class="fa fa-cog"></i></a>
+            <a id="languageSwitcher" class="sets languageSwitch" href="javascript:void(0);" onclick="setLanguage('en')"><i id="langIcon" class="fa fa-globe"></i></a>
+            <a id="setclr" class="sets seto" href="javascript:void(0);" onclick="changeColor()"><i id="langIcon" class="fa fa-adjust"></i></a>
+            <a id="audioSet" class="sets" href="javascript:void(0);" onclick="audioSet()"><i id="audioIcon" class="fa fa-volume-up"></i></a>
             <span id="infotxt" ><i id="usersicon" class="fa fa-users"></i><span data-lang="connects"> מחוברים: </span><span id = "uc">0</span><span data-lang="inRoom"> ,בחדר:  </span><span id="rc">0</span><br><span id="typing"></span></span>
           </p>
           <div id="youtube"></div>

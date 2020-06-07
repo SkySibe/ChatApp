@@ -1,3 +1,29 @@
+let display = false;
+let cogs = () => {
+    if (display) {
+        let syseList = document.getElementsByClassName('sets');
+        for (let element of syseList) {
+            element.style.display = "none";
+        }
+        display = false;
+    } else {
+        let syseList = document.getElementsByClassName('sets');
+        for (let element of syseList) {
+            element.style.display = "block";
+        }
+        display = true;
+    }
+  }
+let audio = true;
+let audioSet = () => {
+    if(audio) {
+        document.getElementById('audioIcon').className = "fa fa-volume-off";
+        audio = false;
+    } else {
+        document.getElementById('audioIcon').className = "fa fa-volume-up";
+        audio = true;
+    }
+}
 //setting the page language to Hebrew by default
 var pagelang = 'he';
 //a function that switches the page language
@@ -301,7 +327,9 @@ socket.on("updateRoom", urco =>{
 //get volume and play message sound
 socket.on('sound',  vol => {
  newMsgAudio.volume = vol;
- newMsgAudio.play();
+ if(audio){
+    newMsgAudio.play();
+ }
 });
 
 //function that verify url and make from it a link
@@ -547,8 +575,9 @@ var msgColr = document.getElementById("message");
     //כאשר נלחץ אות
     $("#message").keyup(e => {
         //ניגון צליל הקלדה
-        playP(clickAudio,e);
-
+        if(audio){
+           playP(clickAudio,e); 
+        }
         var msgVal = $("#message").val();
         msgColr = document.getElementById("message");
         if (msgVal.startsWith('[') || msgVal.startsWith('(') || msgVal.startsWith('{')) {
