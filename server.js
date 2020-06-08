@@ -133,6 +133,9 @@ app.get("/language/he.json", (req, res, next) => {
 app.get("/img/favicon.ico", (req, res, next) => {
   res.sendFile(__dirname + "/public/img/favicon.ico");
 });
+app.get("/img/logo.png", (req, res, next) => {
+  res.sendFile(__dirname + "/public/img/logo.png");
+});
 app.use(express.static("public"));
 var roomes = ['$'];
 var roomno = 1;
