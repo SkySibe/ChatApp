@@ -130,6 +130,9 @@ app.get("/language/en.json", (req, res, next) => {
 app.get("/language/he.json", (req, res, next) => {
   res.sendFile(__dirname + "/public/language/he.json");
 });
+app.get("/img/favicon.ico", (req, res, next) => {
+  res.sendFile(__dirname + "/public/img/favicon.ico");
+});
 app.use(express.static("public"));
 var roomes = ['$'];
 var roomno = 1;
