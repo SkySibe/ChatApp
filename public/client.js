@@ -1,3 +1,30 @@
+//Get the buttons:
+toTopBtn = document.getElementById("toTop");
+toBottomBtn = document.getElementById("toBottom");
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = () => {
+    scrollFunction();
+};
+
+let scrollFunction = () => {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    toTopBtn.style.display = "block";
+    toBottomBtn.style.display = "none";
+  } else {
+    toTopBtn.style.display = "none";
+    toBottomBtn.style.display = "block";
+  }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+let topFunction = () =>{
+  document.body.scrollTop = 0; // For Safari
+  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+}
+let bottomFunction = () => {
+    window.scrollTo(0,document.body.scrollHeight);
+    window.scrollTo(0,document.documentElement.scrollHeight);
+}
 let display = false;
 let cogs = () => {
     if (display) {
