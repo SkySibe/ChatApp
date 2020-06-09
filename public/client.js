@@ -455,7 +455,7 @@ socket.on("thread", (color, name, msg, rtl, type, you, msgid, replayData,tocopy,
         var copy = `<button class="copy" onClick="copy(${msgid},'${tocopy}')"><i class="fa fa-copy"></i></button>`;
     }
     //adding the message to the user view
-    $("#thread").append(`<li id="${msgid}">${replayData}<span id="name-span-${msgid}" class="names" style="color: ${color};">${name}</span><br><span id="msg-span-${msgid}" ${str}>${msg}</span><br><span style="font-size: 10px;">${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}</span>${likeBtn+trash+replayBtn+copy}</li>`);
+    $("#thread").append(`<span id="tm${msgid}"></span><li id="${msgid}">${replayData}<span id="name-span-${msgid}" class="names" style="color: ${color};">${name}</span><br><span id="msg-span-${msgid}" ${str}>${msg}</span><br><span style="font-size: 10px;">${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}</span>${likeBtn+trash+replayBtn+copy}</li>`);
     //scroll the view down the page
     document.getElementById('end').scrollIntoView();
     //resets the replay data
@@ -467,7 +467,7 @@ var replay = mId => {
 	var msgTxt = $('#msg-span-'+mId).html();
     msgTxt = msgTxt.replace('center-fit','rpcn');
     
-	replayData = `<div style="height:5px;font-size:1px;">&nbsp;</div><div class="replay-div" ><span class="names" style="color: ${namClr};">${nam}</span><br>${msgTxt}<div style="height:2px;font-size:1px;">&nbsp;</div></div>`;
+	replayData = `<div style="height:5px;font-size:1px;>&nbsp;</div><div class="replay-div" onclick="location.href='#tm${mId}'"><span class="names" style="color: ${namClr};">${nam}</span><br>${msgTxt}<div style="height:2px;font-size:1px;">&nbsp;</div></div>`;
 }
 var copy = (mId,str) => {
     // Create new element
@@ -511,7 +511,7 @@ socket.on('replay',replay = mId => {
 	var msgTxt = $('#msg-span-'+mId).html();
     msgTxt = msgTxt.replace('center-fit','rpcn');
     
-	replayData = `<div style="height:5px;font-size:1px;">&nbsp;</div><div class="replay-div"><span class="names" style="color: ${namClr};">${nam}</span><br>${msgTxt}<div style="height:2px;font-size:1px;">&nbsp;</div></div>`;
+	replayData = `<div style="height:5px;font-size:1px;">&nbsp;</div><div class="replay-div" onclick="location.href='#tm${mId}'"><span class="names" style="color: ${namClr};">${nam}</span><br>${msgTxt}<div style="height:2px;font-size:1px;">&nbsp;</div></div>`;
     socket.emit('upReplay', replayData);
 });
 socket.on('type', name => {
