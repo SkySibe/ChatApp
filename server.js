@@ -133,6 +133,18 @@ app.get("/language/he.json", (req, res, next) => {
 app.get("/img/favicon.ico", (req, res, next) => {
   res.sendFile(__dirname + "/public/img/favicon.ico");
 });
+app.get("/img/favicon24x24.ico", (req, res, next) => {
+  res.sendFile(__dirname + "/public/img/favicon24x24.ico");
+});
+app.get("/img/favicon32x32.ico", (req, res, next) => {
+  res.sendFile(__dirname + "/public/img/favicon32x32.ico");
+});
+app.get("/img/favicon48x48.ico", (req, res, next) => {
+  res.sendFile(__dirname + "/public/img/favicon48x48.ico");
+});
+app.get("/img/favicon64x64.ico", (req, res, next) => {
+  res.sendFile(__dirname + "/public/img/favicon64x64.ico");
+});
 app.get("/img/logo.png", (req, res, next) => {
   res.sendFile(__dirname + "/public/img/logo.png");
 });
