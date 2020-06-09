@@ -66,6 +66,8 @@ var setLanguage = (language) => {
                 //finally changes the element language
                 if(elems.type == 'text'){
                     elems.placeholder = myObj[label];
+                } else if (elems.nodeName == "META"){
+                    elems.setAttribute("content", myObj[label]);
                 } else {
                     elems.innerHTML = myObj[label];
                 }

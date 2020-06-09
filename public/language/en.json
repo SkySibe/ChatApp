@@ -9,5 +9,6 @@
     "connects": " Connected: ",
     "joindRoom": "You have just joined to the room: ",
     "createdRoom": "You have created and joined to the room: ",
-    "inRoom": " ,in room: "
+    "inRoom": " ,in room: ",
+    "description": "An anonymous chat app with a lot of features."
 }
