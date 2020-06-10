@@ -307,10 +307,12 @@ var joinToRoom = (roomname) => {
     socket.emit('create', roomname);
     room = roomname;
 }
-joinToRoom('$');
-socket.on('connectToRoom',function(data) {
-    
+socket.on('clearAll',() => {
+    $("#thread").empty();
 });
+// socket.on('connectToRoom',function(data) {
+    
+// });
 if ($(window).width() < 340) {
     //remove text and show only icon on button on small screens
     $('#send').html('<i class="fa fa-send"></i>');
@@ -368,13 +370,19 @@ var urlify = text => {
         return `<a target="_blank" rel="noopener noreferrer" href="${url}">${url.replace("http://","").replace("https://","").replace(/\/$/,"")}</a>`;
     })
 }
-socket.on("thread", (color, name, msg, rtl, type, you, msgid, replayData,tocopy,tit,id) => {
+socket.on("thread", (color, name, msg, rtl, type, you, msgid, replayData,tocopy,tit,id,timestamp,likes) => {
+    if(likes == undefined){
+        likes = 0;
+    }
     if (type == 'ifr' && id !== null) {
         msg = `<h1>${tit}</h1><br><iframe value="${id}}" class="video w100" width="640" height="360" src="//www.youtube.com/embed/${id}" frameborder="0" allowfullscreen></iframe>`;
         type = 'code';
     }
-    //update date
-    date = new Date();
+    if(timestamp == null){
+        //update date
+        date = new Date();
+        timestamp = `${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+    }
     //prevent xss
     if (type !== 'code') {
       msg = msg.replace(/</g, "&lt;").replace(/>/g, "&gt;");
@@ -398,10 +406,10 @@ socket.on("thread", (color, name, msg, rtl, type, you, msgid, replayData,tocopy,
     if(!you) {
         var trash = "";
         var replayBtn = `<button id="replay-btn-(${msgid}" onClick="replay(${msgid})" class="replay-btn"><i class="fa fa-reply"></i></button>`
-        var likeBtn = `<div id="cont-like-${msgid}"><button id="like-btn-${msgid}" onClick="like(${msgid})" class="like-btn"><i class="fa fa-heart"></i> <span id="count-${msgid}">0</span></button></div>`;
+        var likeBtn = `<div id="cont-like-${msgid}"><button id="like-btn-${msgid}" onClick="like(${msgid})" class="like-btn"><i class="fa fa-heart"></i> <span id="count-${msgid}">${likes}</span></button></div>`;
     } else {
         var trash = `<button class="trash-btn" onClick="deleteMsg(${msgid})"><i class="fa fa-trash"></i></button>`;
-        var likeBtn = `<p class="p-like"><i class="fa fa-heart"></i> <span id="count-${msgid}">0</span></p>`;
+        var likeBtn = `<p class="p-like"><i class="fa fa-heart"></i> <span id="count-${msgid}">${likes}</span></p>`;
         var replayBtn = "";
     }
     //if message type is text
@@ -472,6 +480,7 @@ socket.on("thread", (color, name, msg, rtl, type, you, msgid, replayData,tocopy,
             });
             msg = result;
     }
+
     //set copy button
     //TODO: fix the bug when enterted ' and `
     if (tocopy.includes("'")) {
@@ -482,7 +491,7 @@ socket.on("thread", (color, name, msg, rtl, type, you, msgid, replayData,tocopy,
         var copy = `<button class="copy" onClick="copy(${msgid},'${tocopy}')"><i class="fa fa-copy"></i></button>`;
     }
     //adding the message to the user view
-    $("#thread").append(`<span id="tm${msgid}"></span><li id="${msgid}">${replayData}<span id="name-span-${msgid}" class="names" style="color: ${color};">${name}</span><br><span id="msg-span-${msgid}" ${str}>${msg}</span><br><span style="font-size: 10px;">${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}</span>${likeBtn+trash+replayBtn+copy}</li>`);
+    $("#thread").append(`<span id="tm${msgid}"></span><li id="${msgid}">${replayData}<span id="name-span-${msgid}" class="names" style="color: ${color};">${name}</span><br><span id="msg-span-${msgid}" ${str}>${msg}</span><br><span style="font-size: 10px;">${timestamp}</span>${likeBtn+trash+replayBtn+copy}</li>`);
     //scroll the view down the page
     document.getElementById('end').scrollIntoView();
     //resets the replay data
@@ -797,4 +806,14 @@ var expendedTime = num => {
         num = '0' + num;
     }
     return num;
+}
+joinToRoom('$');
+socket.on('delLastMessage', () => {
+    $('#thread li:last-child').remove();
+});
+window.onload = function() {
+    if(!window.location.hash) {
+        window.location = window.location + '#loaded';
+        window.location.reload();
+    }
 }

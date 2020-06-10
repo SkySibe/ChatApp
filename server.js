@@ -15,31 +15,79 @@ if (port == null || port == "") {
 //client.handshake.address
 let os = require('os');
 let hostname = os.hostname();
-let messageId = 0;
 let rp = '';
 let ips =[];
 //app.set('view engine', 'ejs');
 let count = 0;
 let nindex = 2;
 let countIp = 0;
+var admin = require("firebase-admin");
+
+
+var serviceAccount = require(process.env.GOOGLE_APPLICATION_CREDENTIALS);
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://chatapp-skysibe.firebaseio.com"
+});
+var db = admin.database();
+var messageId;
+ref = db.ref("messageIdIndex");
+ref.on("value", function(snapshot) {
+  let dt = snapshot.val();
+  messageId = dt;
+}, function (errorObject) {
+  console.log("The read failed: " + errorObject.code);
+});
+let updateMsgIndex = (index) => {
+  db.ref().update({"messageIdIndex": index.toString()});
+}
+let writeMessage = (time,date,hebrew,message,name,reply,room,copy,userid,private,color,type,likes) => {
+  let dmsgId = "m"+messageId;
+  db.ref(`messages/${dmsgId}`).set({
+    time: time,
+    date: date,
+    dir: hebrew,
+    message: message,
+    name: name,
+    reply: reply,
+    room: room,
+    userid: userid,
+    copy: copy,
+    private: private,
+    color: color,
+    type: type,
+    likes: likes
+  });
+}
+// var ref = db.ref("messages");
+// ref.on("value", function(snapshot) {
+//   let dt = snapshot.val();
+//   console.log(dt.m0.date);
+// }, function (errorObject) {
+//   console.log("The read failed: " + errorObject.code);
+// });
+var clientIds = [];
 io.on('connection', client => {
-    if (client) {
-      count++;
-      console.log("User connected, user count: " + count );
-      io.emit("updateCount", count);
-      countIp = ips.length;
-    }
+  if (!clientIds.includes(client.id)) {
+    console.log(client.id);
+    clientIds.push(client.id);
+    count++;
+    console.log("User connected, user count: " + count );
+    io.emit("updateCount", count);
+    countIp = ips.length;
+  }
+  //io.emit("updateCount", countIp);
+  client.on('disconnect', () => {
+    io.emit('updateD');
+    let id = client.id;
+    delete nameAndId[id];
+    count--;
+    io.emit("updateCount", count);
+    console.log("User disconnected, user count: " + count );
+    countIp = ips.length;
     //io.emit("updateCount", countIp);
-    client.on('disconnect', () => {
-      io.emit('updateD');
-      let id = client.id;
-      delete nameAndId[id];
-      count--;
-      io.emit("updateCount", count);
-    	console.log("User disconnected, user count: " + count );
-      countIp = ips.length;
-      //io.emit("updateCount", countIp);
-    });
+  });
 });
 //get server ip
 let interfaces = os.networkInterfaces();
@@ -151,21 +199,43 @@ app.get("/img/logo.png", (req, res, next) => {
 app.use(express.static("public"));
 var roomes = ['$'];
 var roomno = 1;
+var clientsRu = {};
 io.on("connection", client => {
-  client.join(roomes[0]);
-  console.log(`Client: ${client.id} ,in room: $`);
   client.on('create', function(room) {
     room = room.toString();
     io.of('/').in(room).clients(function(error,clients){
       console.log(`Clients in room ${room} | ${clients.length}`);;
     });
+    if(clientsRu[client.id] !== room) {
+      clientsRu[client.id] = undefined;
+      client.emit('clearAll');
+      client.emit("sendsys",true,null);
+      client.emit("sendsys",false,null);
+      var messagesLength;
+      ref = db.ref("messages");
+      ref.on("value", function(snapshot) {
+        messagesLength = snapshot.numChildren();
+      });
+      for(let i = 0; i < messagesLength; i++){
+        ref = db.ref("messages");
+        ref.on("value", function(snapshot) {
+          let dt = snapshot.val();
+          let indexM = Object.keys(dt)[i];
+          if(dt[indexM].room == room && clientsRu[client.id] == undefined) {
+            client.emit("thread", dt[indexM].color, dt[indexM].name, dt[indexM].message, dt[indexM].dir, dt[indexM].type, false, Object.keys(dt)[i].substring(1), dt[indexM].reply, dt[indexM].copy,null,null,dt[indexM].time+" | "+dt[indexM].date, dt[indexM].likes);
+          }
+        }, function (errorObject) {
+          console.log("The read failed: " + errorObject.code);
+        });
+      }
+    }
     if(roomes.includes(room)){
       client.leaveAll();
       client.join(room);
+      clientsRu[client.id] = room;
       io.of('/').in(Object.keys(io.sockets.adapter.sids[client.id])[0]).clients(function(error,clients){
         io.emit('updateRoom',clients.length);
       });
-      client.emit('connectToRoom', "You are in room: "+room);
       client.emit("sendsys","joindRoom", room);
       io.sockets.in(Object.keys(io.sockets.adapter.sids[client.id])[0]).emit('connectToRoom','Another one joined the room.');
     } else {
@@ -173,6 +243,7 @@ io.on("connection", client => {
       roomes.push(room);
       console.log(`New room has been created: ${room}, All the rooms ${JSON.stringify(roomes)}.`);
       client.join(room);
+      clientsRu[client.id] = room;
       io.of('/').in(Object.keys(io.sockets.adapter.sids[client.id])[0]).clients(function(error,clients){
         io.emit('updateRoom',clients.length);
       });
@@ -242,23 +313,29 @@ io.on("connection", client => {
       if (id !== undefined && id.length < 9) {
         id = null,tit = null;
       }
+      let time = new Date();
+      let hour = time.getHours()+":"+time.getMinutes();
+      let date = time.getDate()+"/"+(time.getMonth()+1)+"/"+time.getFullYear();
       if(privateMsg.length > 0) {
           for (let i = 0; i < privateMsg.length; i++) {
             if(privateMsg[i] !== client.id) {
               io.sockets.connected[ privateMsg[i] ].emit("sound", 1);
-              io.sockets.connected[ privateMsg[i] ].emit("thread", color, name, msg, heb, type, false, messageId, reply, copy,tit,id);
+              io.sockets.connected[ privateMsg[i] ].emit("thread", color, name, msg, heb, type, false, messageId, reply, copy,tit,id,null);
+              writeMessage(hour,date,heb,msg,name,reply,null,copy,client.id,privateMsg[i],color,type,0);
             }
           }
       } else {
         if(Object.keys(io.sockets.adapter.sids[client.id])[1] == '$') {
           client.broadcast.to('$').emit("sound", 1);
-          client.broadcast.to('$').emit("thread", color, name, msg, heb, type, false, messageId, reply, copy,tit,id);
+          client.broadcast.to('$').emit("thread", color, name, msg, heb, type, false, messageId, reply, copy,tit,id,null);
+          writeMessage(hour,date,heb,msg,name,reply,'$',copy,client.id,null,color,type,0);
         } else {
           client.broadcast.to(Object.keys(io.sockets.adapter.sids[client.id])[0]).emit("sound", 1);
-          client.broadcast.to(Object.keys(io.sockets.adapter.sids[client.id])[0]).emit("thread", color, name, msg, heb, type, false, messageId, reply, copy,tit,id)
+          client.broadcast.to(Object.keys(io.sockets.adapter.sids[client.id])[0]).emit("thread", color, name, msg, heb, type, false, messageId, reply, copy,tit,id,null);
+          writeMessage(hour,date,heb,msg,name,reply,Object.keys(io.sockets.adapter.sids[client.id])[0],copy,client.id,null,color,type,0);
         }
       }
-      client.emit("thread", color, name, msg, heb, type, true, messageId, reply, copy,tit,id);
+      client.emit("thread", color, name, msg, heb, type, true, messageId, reply, copy,id,null);
     }
     
     if (msg.startsWith('(')) {
@@ -348,6 +425,7 @@ io.on("connection", client => {
       }
     }
     messageId++;
+    updateMsgIndex(messageId);
     rp = '';
   });
   client.on('replayData', replayId => {
@@ -362,16 +440,16 @@ io.on("connection", client => {
   });
   client.on('typing', name => {
     if(nameAndId[client.id] == name || name === 'ללא שם') {
-      if(Object.keys(io.sockets.adapter.sids[client.id])[1] == 'main') {
-        client.broadcast.to('main').emit('type' ,name);
+      if(Object.keys(io.sockets.adapter.sids[client.id])[1] == '$') {
+        client.broadcast.to('$').emit('type' ,name);
       } else {
         client.broadcast.to(Object.keys(io.sockets.adapter.sids[client.id])[0]).emit('type' ,name);
       }
     }
   });
   client.on('stopType', name => {
-    if(Object.keys(io.sockets.adapter.sids[client.id])[1] == 'main') {
-      client.broadcast.to('main').emit('stype' ,name);
+    if(Object.keys(io.sockets.adapter.sids[client.id])[1] == '$') {
+      client.broadcast.to('$').emit('stype' ,name);
     } else {
       client.broadcast.to(Object.keys(io.sockets.adapter.sids[client.id])[0]).emit('stype' ,name);
     }
@@ -383,15 +461,52 @@ io.on("connection", client => {
     } else if (likesAndId[mseId] == id) {
       console.log("Can't multy like");
     } else {
-      io.emit("likePu",mseId);
-      client.emit("likePr",mseId);
       likesAndId[mseId] = id;
+      let likes;
+      db.ref(`messages/m${mseId}`).on("value", function(snapshot) {
+        likes = snapshot.val().likes;
+      });
+      console.log(likes);
+      if(likes !== null || likes !== undefined){
+        likes++;
+        console.log("aFTER: "+likes);
+        db.ref(`messages/m${mseId}`).update({
+          "likes": likes
+        });
+      //   let room;
+      //   if(Object.keys(io.sockets.adapter.sids[client.id])[1] == '$') {
+      //     room == '$';
+      //   } else {
+      //     room = Object.keys(io.sockets.adapter.sids[client.id])[0];
+      //   }
+      //   var messagesLength;
+      //   ref = db.ref("messages");
+      //   ref.on("value", function(snapshot) {
+      //     messagesLength = snapshot.numChildren();
+      //   });
+      //   for(let i = 0; i < messagesLength+1; i++){
+      //     ref = db.ref("messages");
+      //     ref.on("value", function(snapshot) {
+      //       let dt = snapshot.val();
+      //       let indexM = Object.keys(dt)[i];
+      //       if(dt[indexM].room == room) {
+      //         client.emit("delLastMessage");
+      //         client.broadcast.to(Object.keys(io.sockets.adapter.sids[client.id])[0]).emit("delLastMessage");
+      //       }
+      //     }, function (errorObject) {
+      //       console.log("The read failed: " + errorObject.code);
+      //     });
+      // }
+    }
+      io.emit("likePu", mseId);
+      client.emit("likePr", mseId);
     }
   });
   client.on('trash', mseId => {
     let id = client.id;
     if (messagesAndId[mseId] == id) {
       io.emit("delThis",mseId);
+      db.ref(`messages/m${mseId}`).remove();
     } else {
       console.log(`Can't delete others messages, client id: ${id}, message id: ${mseId}, messages and ids: `);
       console.log(messagesAndId);
