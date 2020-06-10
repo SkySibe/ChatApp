@@ -23,8 +23,7 @@ let nindex = 2;
 let countIp = 0;
 var admin = require("firebase-admin");
 
-
-var serviceAccount = require(process.env.GOOGLE_APPLICATION_CREDENTIALS);
+var serviceAccount = require("C:/Users/Elazar/Desktop/all/Programming/Websites/chatApp/vulenrable/chatapp-skysibe-firebase-adminsdk-66rsd-ea63e09eab.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
