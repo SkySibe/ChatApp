@@ -77,17 +77,28 @@ let writeMessage = (time,date,hebrew,message,name,reply,room,copy,userid,private
 // });
 var clientIds = [];
 var clientIps = [];
-io.on('connection', client => {
-  let index = clientIds.indexOf(client.id);
-  if (index == -1) {
-    console.log(client.id);
-    clientIds.push(client.id);
-    clientIps.push(client.request.connection.remoteAddress);
-    count++;
-    console.log("User connected, user count: " + count );
-    io.emit("updateCount", count);
-    countIp = ips.length;
+let returnsPromise = () => {
+	return new Promise((resolve) => {
+  	setTimeout(() => {
+    	resolve();
+    }, 1000);
+  })
+}
+io.on('connection', (client) => {
+  async function connect() {
+    const result = await returnsPromise();
+    let index = clientIds.indexOf(client.id);
+    if (index == -1) {
+      console.log(client.id);
+      clientIds.push(client.id);
+      clientIps.push(client.request.connection.remoteAddress);
+      count++;
+      console.log("User connected, user count: " + count );
+      io.emit("updateCount", count);
+      countIp = ips.length;
+    }
   }
+  connect();
   //io.emit("updateCount", countIp);
   client.on('disconnect', () => {
     io.emit('updateD');
