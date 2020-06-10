@@ -208,6 +208,9 @@ app.get("/language/en.json", (req, res, next) => {
 app.get("/language/he.json", (req, res, next) => {
   res.sendFile(__dirname + "/public/language/he.json");
 });
+app.get("/img/faviconpng.png", (req, res, next) => {
+  res.sendFile(__dirname + "/public/img/faviconpng.png");
+});
 app.get("/img/favicon.ico", (req, res, next) => {
   res.sendFile(__dirname + "/public/img/favicon.ico");
 });
@@ -230,7 +233,9 @@ app.use(express.static("public"));
 var roomes = ['$'];
 var roomno = 1;
 var clientsRu = {};
+var clientImgur = process.env.IMGUR_CLIENT_ID;
 io.on("connection", client => {
+  client.emit("clientId",clientImgur);
   io.emit("updateCount", count);
   client.on('create', function(room) {
     io.emit("updateCount", count);
@@ -494,7 +499,7 @@ io.on("connection", client => {
     } else {
       likesAndId[mseId] = id;
       let likes;
-      db.ref(`messages/m${mseId}`).on("value", function(snapshot) {
+      db.ref(`messages/${mseId}`).on("value", function(snapshot) {
         likes = snapshot.val().likes;
       });
       console.log(likes);
@@ -537,7 +542,7 @@ io.on("connection", client => {
     let id = client.id;
     if (messagesAndId[mseId] == id) {
       io.emit("delThis",mseId);
-      db.ref(`messages/m${mseId}`).remove();
+      db.ref(`messages/${mseId}`).remove();
     } else {
       console.log(`Can't delete others messages, client id: ${id}, message id: ${mseId}, messages and ids: `);
       console.log(messagesAndId);

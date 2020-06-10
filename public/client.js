@@ -748,7 +748,7 @@ var sendMsg = () => {
     var msgVal = document.getElementById("message").value;
     if (!msgArr.length == 0 && !msgVal.includes('#ברוך הבא !=3399ff+000099')) {    
         msgArr.push(String(msgVal));
-        console.table(msgArr);
+        //console.table(msgArr);
         msgI = msgArr.length;
         
     }
@@ -789,7 +789,8 @@ var sendMsg = () => {
     if (!set) {
         $("#name").remove();
         $("#color").remove();
-        $("#send").css("cssText",`width: -webkit-calc(30% - 10px) !imortant; width: -moz-calc(30% - 10px) !important; width: calc(30% - 10px) !important;`);
+        $("#upImg").css("cssText",`width: -webkit-calc(%10 - 10px) !imortant; width: -moz-calc(10% - 10px) !important; width: calc(10% - 10px) !important;`);
+        $("#send").css("cssText",`width: -webkit-calc(20% - 10px) !imortant; width: -moz-calc(20% - 10px) !important; width: calc(20% - 10px) !important;`);
         $("#message").css("cssText",'width: -webkit-calc(70% - 10px) !important; width: -moz-calc(70% - 10px) !important; width: calc(70% - 10px) !important;');
         set = true;
     }
@@ -811,6 +812,33 @@ joinToRoom('$');
 socket.on('delLastMessage', () => {
     $('#thread li:last-child').remove();
 });
+document.getElementById('upImg').addEventListener('click', () => {
+    document.querySelector('input[type="file"]').click();
+});
+var clientId;
+socket.on('clientId', (data) => {
+    clientId = data;
+});
+function upload() {
+    var file = document.getElementById('imgIn').files[0];
+
+    if (!file || !file.type.match(/image.*/)) return;
+    /* Lets build a FormData object*/
+    var fd = new FormData(); 
+    fd.append("image", file); // Append the file
+    var xhr = new XMLHttpRequest(); // Create the XHR (Cross-Domain XHR FTW!!!) Thank you sooooo much imgur.com
+    xhr.open("POST", "https://api.imgur.com/3/image.json"); // Boooom!
+    xhr.onload = function() {
+    // Big win!    
+        var link = JSON.parse(xhr.responseText).data.link;
+        // document.querySelector("#link").href = link;
+        document.getElementById("message").value = link
+    }
+    // Ok, I don't handle the errors. An exercice for the reader.
+    xhr.setRequestHeader('Authorization', 'Client-ID '+clientId);
+    /* And now, we send the formdata */
+    xhr.send(fd);
+};
 socket.on('reloadPage', () => {
     window.onload = function() {
         if(!window.location.hash) {

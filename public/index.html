@@ -7,11 +7,12 @@ xmlns:fb="http://ogp.me/ns/fb#">
       <meta property="og:locale:alternate" content="en_US" />
       <title data-lang="title">צ'אט</title>
       <meta property="og:title" data-lang="title" content="צ'אט" />
-      <link rel="icon" type="image/x-icon" href="/img/favicon.ico" sizes="16x16" >
-      <link rel="icon" type="image/x-icon" href="/img/favicon24x24.ico" sizes="24x24">
-      <link rel="icon" type="image/x-icon" href="/img/favicon32x32.ico" sizes="32x32">
-      <link rel="icon" type="image/x-icon" href="/img/favicon48x48.ico" sizes="48x48">
-      <link rel="icon" type="image/x-icon" href="/img/favicon64x64.ico" sizes="64x64">
+      <link rel="shortcut icon" href="/img/favicon.ico?v=2" type="image/x-icon" sizes="16x16" />
+      <link rel="icon" type="image/x-icon" href="/img/favicon.ico?v=2" sizes="16x16" >
+      <link rel="icon" type="image/x-icon" href="/img/favicon24x24.ico?v=2" sizes="24x24">
+      <link rel="icon" type="image/x-icon" href="/img/favicon32x32.ico?v=2" sizes="32x32">
+      <link rel="icon" type="image/x-icon" href="/img/favicon48x48.ico?v=2" sizes="48x48">
+      <link rel="icon" type="image/x-icon" href="/img/favicon64x64.ico?v=2" sizes="64x64">
       <meta property="og:url" content="https://skysibe.herokuapp.com/" />
       <meta property="og:image" content="/img/logo.png" />
       <meta property="og:type" content="application/javascript"/>
@@ -51,7 +52,9 @@ xmlns:fb="http://ogp.me/ns/fb#">
             <input id="name" data-lang="nameph" type="text" placeholder="הקלד/י שם" autocomplete="off">
             <input id="message" data-lang="msgph" type="text" placeholder="הקלד/י הודעה" autocomplete="off">
             <audio id="clickP" src="/audio/click.mp3"></audio>
-            <button id="send" data-lang="send" onclick="sendMsg()" type="submit"><i class="fa fa-send"></i> שלח</button>
+            <button id="send" onclick="sendMsg()" type="submit"><i class="fa fa-send"></i></button>
+            <input id="imgIn" type="file" accept="image/*" onchange="upload()">
+            <buttonid id="upImg"><i class="fa fa-image"></i></button>
           </div>
       <!-- scripts -->
       <script src="/socket.io/socket.io.js"></script>

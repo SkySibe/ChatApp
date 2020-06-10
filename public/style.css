@@ -27,6 +27,9 @@ html,body,li,#formsg,ul {
   margin: 0;
   font-family: 'Varela Round', sans-serif;
 }
+#imgIn {
+  display: none;
+}
 .navigation-button {
   display: none; /* Hidden by default */
   position: fixed; /* Fixed/sticky position */
@@ -52,6 +55,17 @@ html,body,li,#formsg,ul {
 }
 .navigation-button:hover {
   background-color: lightgray; /* Add a dark-grey background on hover */
+}
+#upImg {
+  border: 2px solid var(--db);
+  background-color: var(--db);
+  color: white;
+  border-radius: 16px;
+  padding: 3px;
+}
+#upImg:hover {
+  background-color: white;
+  color: var(--db);
 }
 .confs{
   float: left;
