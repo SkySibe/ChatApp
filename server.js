@@ -62,7 +62,7 @@ let updateMsgIndex = (index) => {
   db.ref().update({"messageIdIndex": index.toString()});
 }
 let writeMessage = (time,date,hebrew,message,name,reply,room,copy,userid,private,color,type,likes) => {
-  let dmsgId = "m"+messageId;
+  let dmsgId = messageId;
   db.ref(`messages/${dmsgId}`).set({
     time: time,
     date: date,
