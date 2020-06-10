@@ -21,7 +21,7 @@ let ips =[];
 let count = 0;
 let nindex = 2;
 let countIp = 0;
-if (process.env.NODE_ENV !== 'production') require("dotenv").config();
+require("dotenv").config({silent: process.env.NODE_ENV === 'production'});
 var admin = require("firebase-admin");
 admin.initializeApp({
   credential: admin.credential.cert({
