@@ -23,10 +23,11 @@ let nindex = 2;
 let countIp = 0;
 var admin = require("firebase-admin");
 
-var serviceAccount = require("C:/Users/Elazar/Desktop/all/Programming/Websites/chatApp/vulenrable/chatapp-skysibe-firebase-adminsdk-66rsd-ea63e09eab.json");
-
 admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
+  credential: admin.credential.cert({
+    "private_key": process.env.FIREBASE_PRIVATE_KEY,
+    "client_email": process.env.FIREBASE_CLIENT_EMAIL,
+  }),
   databaseURL: "https://chatapp-skysibe.firebaseio.com"
 });
 var db = admin.database();
