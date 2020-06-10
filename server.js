@@ -23,7 +23,6 @@ let nindex = 2;
 let countIp = 0;
 require("dotenv").config();
 var admin = require("firebase-admin");
-console.log(process.env.FIREBASE_PROJECT_ID);
 admin.initializeApp({
   credential: admin.credential.cert({
     "type": process.env.FIREBASE_TYPE,
