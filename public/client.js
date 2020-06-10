@@ -811,9 +811,11 @@ joinToRoom('$');
 socket.on('delLastMessage', () => {
     $('#thread li:last-child').remove();
 });
-window.onload = function() {
-    if(!window.location.hash) {
-        window.location = window.location + '#loaded';
-        window.location.reload();
+socket.on('reloadPage', () => {
+    window.onload = function() {
+        if(!window.location.hash) {
+            window.location = window.location + '#loaded';
+            window.location.reload();
+        }
     }
-}
+});

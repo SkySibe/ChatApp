@@ -39,6 +39,17 @@ admin.initializeApp({
   databaseURL: "https://chatapp-skysibe.firebaseio.com"
 });
 var db = admin.database();
+let resolveAfter2Seconds = (x) => { 
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(x);
+    }, 20);
+  });
+}
+async function wait() {
+  var x = await resolveAfter2Seconds(20);
+  console.log(x);
+}
 var messageId;
 ref = db.ref("messageIdIndex");
 ref.on("value", function(snapshot) {
@@ -78,6 +89,9 @@ let writeMessage = (time,date,hebrew,message,name,reply,room,copy,userid,private
 var clientIds = [];
 var clientIps = [];
 io.on('connection', client => {
+  if (process.env.PORT == null || process.env.PORT == "") {
+    client.emit('reloadPage');
+  }
   let index = clientIds.indexOf(client.id);
   if (index == -1) {
     console.log(client.id);
