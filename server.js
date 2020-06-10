@@ -76,10 +76,13 @@ let writeMessage = (time,date,hebrew,message,name,reply,room,copy,userid,private
 //   console.log("The read failed: " + errorObject.code);
 // });
 var clientIds = [];
+var clientIps = [];
 io.on('connection', client => {
-  if (!clientIds.includes(client.id)) {
+  let index = clientIds.indexOf(client.id);
+  if (index == -1) {
     console.log(client.id);
     clientIds.push(client.id);
+    clientIps.push(client.request.connection.remoteAddress);
     count++;
     console.log("User connected, user count: " + count );
     io.emit("updateCount", count);
@@ -90,6 +93,11 @@ io.on('connection', client => {
     io.emit('updateD');
     let id = client.id;
     delete nameAndId[id];
+    // var index = clientIds.indexOf(client.request.connection.remoteAddress);
+    // if (index !== -1) clientIds.splice(index, 1);
+    // index = clientIps.indexOf(client.request.connection.remoteAddress);
+    // if (index !== -1) clientIps.splice(index, 1);
+    // console.log(clientIps+'|'+clientIds);
     count--;
     io.emit("updateCount", count);
     console.log("User disconnected, user count: " + count );
@@ -229,7 +237,7 @@ io.on("connection", client => {
         ref.on("value", function(snapshot) {
           let dt = snapshot.val();
           let indexM = Object.keys(dt)[i];
-          if(dt[indexM].room == room && clientsRu[client.id] == undefined) {
+          if(dt[indexM].room == room && clientsRu[client.id] == undefined && indexM !== undefined && indexM !== null && indexM !== "") {
             client.emit("thread", dt[indexM].color, dt[indexM].name, dt[indexM].message, dt[indexM].dir, dt[indexM].type, false, Object.keys(dt)[i].substring(1), dt[indexM].reply, dt[indexM].copy,null,null,dt[indexM].time+" | "+dt[indexM].date, dt[indexM].likes);
           }
         }, function (errorObject) {
@@ -260,7 +268,7 @@ io.on("connection", client => {
       roomno++;
     }
     console.log(`Client joined room: ${room}.`);
-    console.log(Object.keys(io.sockets.adapter.sids[client.id])[0]);
+    //console.log(Object.keys(io.sockets.adapter.sids[client.id])[0]);
   });
   io.emit('upNindex',nindex);
   io.emit('nameList',Object.values(nameAndId));
