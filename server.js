@@ -225,7 +225,6 @@ io.on("connection", client => {
     if(clientsRu[client.id] !== room) {
       clientsRu[client.id] = undefined;
       client.emit('clearAll');
-      client.emit("sendsys",true,null);
       client.emit("sendsys",false,null);
       var messagesLength;
       ref = db.ref("messages");
