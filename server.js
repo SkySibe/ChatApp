@@ -258,7 +258,7 @@ io.on("connection", client => {
           let dt = snapshot.val();
           let indexM = Object.keys(dt)[i];
           if(dt[indexM].room == room && clientsRu[client.id] == undefined && indexM !== undefined && indexM !== null && indexM !== "") {
-            client.emit("thread", dt[indexM].color, dt[indexM].name, dt[indexM].message, dt[indexM].dir, dt[indexM].type, false, Object.keys(dt)[i].substring(1), dt[indexM].reply, dt[indexM].copy,null,null,dt[indexM].time+" | "+dt[indexM].date, dt[indexM].likes);
+            client.emit("thread", dt[indexM].color, dt[indexM].name, dt[indexM].message, dt[indexM].dir, dt[indexM].type, false, indexM , dt[indexM].reply, dt[indexM].copy,null,null,dt[indexM].time+" | "+dt[indexM].date, dt[indexM].likes);
           }
         }, function (errorObject) {
           console.log("The read failed: " + errorObject.code);
@@ -499,14 +499,14 @@ io.on("connection", client => {
     } else {
       likesAndId[mseId] = id;
       let likes;
+      console.log(mseId)
       db.ref(`messages/${mseId}`).on("value", function(snapshot) {
         likes = snapshot.val().likes;
       });
       console.log(likes);
       if(likes !== null || likes !== undefined){
         likes++;
-        console.log("aFTER: "+likes);
-        db.ref(`messages/m${mseId}`).update({
+        db.ref(`messages/${mseId}`).update({
           "likes": likes
         });
       //   let room;
