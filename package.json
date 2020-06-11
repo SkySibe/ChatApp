@@ -19,6 +19,7 @@
     "express": "^4.17.1",
     "express-ip": "^1.0.4",
     "firebase-admin": "^8.12.1",
+    "git-bfg": "^0.1.15",
     "http": "0.0.0",
     "is-image-url": "^1.1.8",
     "is-url": "^1.2.4",
