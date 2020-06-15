@@ -1,3 +1,25 @@
+//for cookies
+let setCookie = (cname, cvalue, exdays) => {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+let getCookie = (cname) => {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
+}
 //Get the buttons:
 toTopBtn = document.getElementById("toTop");
 toBottomBtn = document.getElementById("toBottom");
@@ -41,20 +63,32 @@ let cogs = () => {
         display = true;
     }
   }
-let audio = true;
 let audioSet = () => {
     if(audio) {
         document.getElementById('audioIcon').className = "fa fa-volume-off";
         audio = false;
+        setCookie("audio", audio, 365);
     } else {
         document.getElementById('audioIcon').className = "fa fa-volume-up";
         audio = true;
+        setCookie("audio", audio, 365);
     }
 }
-//setting the page language to Hebrew by default
-var pagelang = 'he';
+let audio;
+if(getCookie("audio") == ""){
+    audio = true;
+} else if (getCookie("audio") == "true"){
+    audio = false;
+    audioSet();
+} else if (getCookie("audio") == "false"){
+    audio = true;
+    audioSet();
+}
+//setting the page language by cookie
+var pagelang = String(getCookie("lang"));
 //a function that switches the page language
 var setLanguage = (language) => {
+    setCookie("lang", language, 365);
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
     //if xml got the json response
@@ -106,6 +140,11 @@ var setLanguage = (language) => {
     xmlhttp.open("GET", `/language/${language}.json`, true);
     xmlhttp.send();
 }
+if(pagelang === 'he' || pagelang === 'en') {
+    setLanguage(String(getCookie("lang")));
+} else {
+    pagelang = 'he';
+}
 //gonna use date next
 var date = new Date();
 //setting var to check if the user already chosed name and color
@@ -132,8 +171,8 @@ var changeProperty = (vr,colr) => {
     let root = document.documentElement;
     root.style.setProperty(vr,colr);
 }
-var corentColor = 0;
 var changeColor = () => {
+    setCookie("design", corentColor, 365);
     switch(corentColor) {
         case 4:
             corentColor++;
@@ -195,8 +234,8 @@ var changeColor = () => {
             changeProperty('--db', 'CornflowerBlue');
             changeProperty('--lb', '#3399ff');
             changeProperty('--lsk', '#0066ff');
-            changeProperty('--lbmsgtxt','#262626');
-            changeProperty('--lskmsgtxt','#262626');
+            changeProperty('--lbmsgtxt','#f2f2f2');
+            changeProperty('--lskmsgtxt','#f2f2f2');
             changeProperty('--backco', 'BurlyWood');
             changeProperty('--intxtco', '');
             changeProperty('--intxtnrml', 'SkyBlue');
@@ -243,6 +282,12 @@ var changeColor = () => {
             changeProperty('--infobartxt', 'WhiteSmoke');
             changeProperty('--bordertbf', 'Black');
     }
+}
+var corentColor = parseInt(getCookie("design"));
+if(corentColor == NaN) {
+    corentColor = 0;
+} else {
+    changeColor();
 }
 //setting function to send system messages
 var systemMsg = (msg) => {
@@ -839,11 +884,11 @@ function upload() {
     /* And now, we send the formdata */
     xhr.send(fd);
 };
-socket.on('reloadPage', () => {
-    window.onload = function() {
-        if(!window.location.hash) {
-            window.location = window.location + '#loaded';
-            window.location.reload();
-        }
-    }
-});
+// socket.on('reloadPage', () => {
+//     window.onload = function() {
+//         if(!window.location.hash) {
+//             window.location = window.location + '#loaded';
+//             window.location.reload();
+//         }
+//     }
+// });

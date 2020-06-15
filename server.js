@@ -39,19 +39,8 @@ admin.initializeApp({
   databaseURL: "https://chatapp-skysibe.firebaseio.com"
 });
 var db = admin.database();
-let resolveAfter2Seconds = (x) => { 
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve(x);
-    }, 20);
-  });
-}
-async function wait() {
-  var x = await resolveAfter2Seconds(20);
-  console.log(x);
-}
 var messageId;
-ref = db.ref("messageIdIndex");
+let ref = db.ref("messageIdIndex");
 ref.on("value", function(snapshot) {
   let dt = snapshot.val();
   messageId = dt;
@@ -79,6 +68,40 @@ let writeMessage = (time,date,hebrew,message,name,reply,room,copy,userid,private
     likes: likes
   });
 }
+  // ref.once('value').then( function(snapshot) {
+  //   msgD = snapshot.key;
+  //   console.log(msgD);
+  //   if (snapshot.key == ip && msgD !== null) {
+  //     if (!Object.values(snapshot.key).map((x, index) => Object.keys(x)[index]).includes(msgId)) {//Object.valuse(msgD).indexOf(msgId) > -1
+  //       console.log("New ID");
+  //       ref.push(msgId);
+  //     }
+  //   } else {
+  //     console.log("New IP");
+  //     ref.push(msgId);
+  //   }
+  // });
+
+// function ipsLikes(ip,msgId) {
+//   ip = ip.replace(/\./g, "dot");
+//   ref = db.ref(`ipslikes/${ip}`);
+//   let arr = [];
+//   ref.once("value").then( function(snapshot) {
+//     snapshot.forEach(function (child) {
+//       arr.push(child.val());
+//     });
+//   });
+//   console.log(arr + "|" + msgId);
+//   if (!arr.includes(msgId)) {
+//     console.log("New ID");
+//     ref.push(msgId);
+//   }
+// }
+// ipsLikes('88.88.88.88',55);
+// ipsLikes('88.88.88.88',11);
+// ipsLikes('88.88.88.88',20);
+// ipsLikes('11.11.11.11',52);
+// ipsLikes('11.11.11.11',21);
 // var ref = db.ref("messages");
 // ref.on("value", function(snapshot) {
 //   let dt = snapshot.val();
@@ -235,6 +258,7 @@ var roomno = 1;
 var clientsRu = {};
 var clientImgur = process.env.IMGUR_CLIENT_ID;
 io.on("connection", client => {
+  console.log(`request.connection: ${client.request.connection.remoteAddress} | conn.remoteAddress: ${client.conn.remoteAddress} | handshake: ${client.handshake.address}`); 
   client.emit("clientId",clientImgur);
   io.emit("updateCount", count);
   client.on('create', function(room) {
@@ -366,6 +390,7 @@ io.on("connection", client => {
           client.broadcast.to('$').emit("thread", color, name, msg, heb, type, false, messageId, reply, copy,tit,id,null);
           writeMessage(hour,date,heb,msg,name,reply,'$',copy,client.id,null,color,type,0);
         } else {
+          console.log("Write to:"+Object.keys(io.sockets.adapter.sids[client.id])[0]);
           client.broadcast.to(Object.keys(io.sockets.adapter.sids[client.id])[0]).emit("sound", 1);
           client.broadcast.to(Object.keys(io.sockets.adapter.sids[client.id])[0]).emit("thread", color, name, msg, heb, type, false, messageId, reply, copy,tit,id,null);
           writeMessage(hour,date,heb,msg,name,reply,Object.keys(io.sockets.adapter.sids[client.id])[0],copy,client.id,null,color,type,0);
@@ -475,6 +500,7 @@ io.on("connection", client => {
     }
   });
   client.on('typing', name => {
+    name = String(name);
     if(nameAndId[client.id] == name || name === 'ללא שם') {
       if(Object.keys(io.sockets.adapter.sids[client.id])[1] == '$') {
         client.broadcast.to('$').emit('type' ,name);
@@ -484,6 +510,7 @@ io.on("connection", client => {
     }
   });
   client.on('stopType', name => {
+    name = String(name);
     if(Object.keys(io.sockets.adapter.sids[client.id])[1] == '$') {
       client.broadcast.to('$').emit('stype' ,name);
     } else {
@@ -492,60 +519,64 @@ io.on("connection", client => {
   });
   client.on('like', mseId => {
     let id = client.id;
-    if (messagesAndId[mseId] == id) {
-      console.log("Can't like self msgs");
-    } else if (likesAndId[mseId] == id) {
-      console.log("Can't multy like");
-    } else {
-      likesAndId[mseId] = id;
-      let likes;
-      console.log(mseId)
-      db.ref(`messages/${mseId}`).on("value", function(snapshot) {
-        likes = snapshot.val().likes;
-      });
-      console.log(likes);
-      if(likes !== null || likes !== undefined){
-        likes++;
-        db.ref(`messages/${mseId}`).update({
-          "likes": likes
+    if(!isNaN(mseId)) {
+      if (messagesAndId[mseId] == id) {
+        console.log("Can't like self msgs");
+      } else if (likesAndId[mseId] == id) {
+        console.log("Can't multy like");
+      } else {
+        likesAndId[mseId] = id;
+        let likes;
+        console.log(mseId)
+        db.ref(`messages/${mseId}`).on("value", function(snapshot) {
+          likes = snapshot.val().likes;
         });
-      //   let room;
-      //   if(Object.keys(io.sockets.adapter.sids[client.id])[1] == '$') {
-      //     room == '$';
-      //   } else {
-      //     room = Object.keys(io.sockets.adapter.sids[client.id])[0];
-      //   }
-      //   var messagesLength;
-      //   ref = db.ref("messages");
-      //   ref.on("value", function(snapshot) {
-      //     messagesLength = snapshot.numChildren();
-      //   });
-      //   for(let i = 0; i < messagesLength+1; i++){
-      //     ref = db.ref("messages");
-      //     ref.on("value", function(snapshot) {
-      //       let dt = snapshot.val();
-      //       let indexM = Object.keys(dt)[i];
-      //       if(dt[indexM].room == room) {
-      //         client.emit("delLastMessage");
-      //         client.broadcast.to(Object.keys(io.sockets.adapter.sids[client.id])[0]).emit("delLastMessage");
-      //       }
-      //     }, function (errorObject) {
-      //       console.log("The read failed: " + errorObject.code);
-      //     });
-      // }
-    }
-      io.emit("likePu", mseId);
-      client.emit("likePr", mseId);
+        console.log(likes);
+        if(likes !== null || likes !== undefined){
+          likes++;
+          db.ref(`messages/${mseId}`).update({
+            "likes": likes
+          });
+        //   let room;
+        //   if(Object.keys(io.sockets.adapter.sids[client.id])[1] == '$') {
+        //     room == '$';
+        //   } else {
+        //     room = Object.keys(io.sockets.adapter.sids[client.id])[0];
+        //   }
+        //   var messagesLength;
+        //   ref = db.ref("messages");
+        //   ref.on("value", function(snapshot) {
+        //     messagesLength = snapshot.numChildren();
+        //   });
+        //   for(let i = 0; i < messagesLength+1; i++){
+        //     ref = db.ref("messages");
+        //     ref.on("value", function(snapshot) {
+        //       let dt = snapshot.val();
+        //       let indexM = Object.keys(dt)[i];
+        //       if(dt[indexM].room == room) {
+        //         client.emit("delLastMessage");
+        //         client.broadcast.to(Object.keys(io.sockets.adapter.sids[client.id])[0]).emit("delLastMessage");
+        //       }
+        //     }, function (errorObject) {
+        //       console.log("The read failed: " + errorObject.code);
+        //     });
+        // }
+      }
+        io.emit("likePu", mseId);
+        client.emit("likePr", mseId);
+      }
     }
   });
   client.on('trash', mseId => {
     let id = client.id;
-    if (messagesAndId[mseId] == id) {
-      io.emit("delThis",mseId);
-      db.ref(`messages/${mseId}`).remove();
-    } else {
-      console.log(`Can't delete others messages, client id: ${id}, message id: ${mseId}, messages and ids: `);
-      console.log(messagesAndId);
+    if(!isNaN(mseId)) {
+      if (messagesAndId[mseId] == id) {
+        io.emit("delThis",mseId);
+        db.ref(`messages/${mseId}`).remove();
+      } else {
+        console.log(`Can't delete others messages, client id: ${id}, message id: ${mseId}, messages and ids: `);
+        console.log(messagesAndId);
+      }
     }
   });
   client.on('updateI', () => {
