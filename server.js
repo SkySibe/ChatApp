@@ -264,8 +264,14 @@ io.on("connection", client => {
   client.on('create', function(room) {
     io.emit("updateCount", count);
     room = room.toString();
-    io.of('/').in(room).clients(function(error,clients){
-      console.log(`Clients in room ${room} | ${clients.length}`);;
+    io.in(room).allSockets()
+    .then(sockets => {
+        const clients = Array.from(sockets);
+        console.log(`Clients in room ${room}: ${clients.length}`);
+        // Do whatever you need with the `clients` array here
+    })
+    .catch(error => {
+        console.error(error);
     });
     if(clientsRu[client.id] !== room) {
       clientsRu[client.id] = undefined;
