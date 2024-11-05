@@ -622,13 +622,18 @@ io.on("connection", client => {
     const rooms = Array.from(client.rooms);
     const roomId = rooms.find(r => r !== client.id);
     if (roomId) {
-      io.of('/').in(roomId).clients(function (error, clients) {
-        io.emit('updateRoom', clients.length);
-      });
+      io.in(roomId).allSockets()
+        .then(sockets => {
+          const clientCount = sockets.size; // 'sockets' is a Set of client IDs
+          io.emit('updateRoom', clientCount);
+        })
+        .catch(error => {
+          console.error("Error retrieving clients in room:", error);
+        });
     } else {
       console.error("Client ID or room ID is undefined.");
     }
-  });
+  });  
 });
 console.log(`Server running on: ${addresses[0]}:${port} | ${hostname}`);
 server.listen(port);
