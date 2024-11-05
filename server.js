@@ -16,12 +16,12 @@ if (port == null || port == "") {
 let os = require('os');
 let hostname = os.hostname();
 let rp = '';
-let ips =[];
+let ips = [];
 //app.set('view engine', 'ejs');
 let count = 0;
 let nindex = 2;
 let countIp = 0;
-require("dotenv").config({silent: process.env.NODE_ENV === 'production'});
+require("dotenv").config({ silent: process.env.NODE_ENV === 'production' });
 var admin = require("firebase-admin");
 admin.initializeApp({
   credential: admin.credential.cert({
@@ -41,16 +41,16 @@ admin.initializeApp({
 var db = admin.database();
 var messageId;
 let ref = db.ref("messageIdIndex");
-ref.on("value", function(snapshot) {
+ref.on("value", function (snapshot) {
   let dt = snapshot.val();
   messageId = dt;
 }, function (errorObject) {
   console.log("The read failed: " + errorObject.code);
 });
 let updateMsgIndex = (index) => {
-  db.ref().update({"messageIdIndex": index.toString()});
+  db.ref().update({ "messageIdIndex": index.toString() });
 }
-let writeMessage = (time,date,hebrew,message,name,reply,room,copy,userid,private,color,type,likes) => {
+let writeMessage = (time, date, hebrew, message, name, reply, room, copy, userid, private, color, type, likes) => {
   let dmsgId = messageId;
   db.ref(`messages/${dmsgId}`).set({
     time: time,
@@ -68,19 +68,19 @@ let writeMessage = (time,date,hebrew,message,name,reply,room,copy,userid,private
     likes: likes
   });
 }
-  // ref.once('value').then( function(snapshot) {
-  //   msgD = snapshot.key;
-  //   console.log(msgD);
-  //   if (snapshot.key == ip && msgD !== null) {
-  //     if (!Object.values(snapshot.key).map((x, index) => Object.keys(x)[index]).includes(msgId)) {//Object.valuse(msgD).indexOf(msgId) > -1
-  //       console.log("New ID");
-  //       ref.push(msgId);
-  //     }
-  //   } else {
-  //     console.log("New IP");
-  //     ref.push(msgId);
-  //   }
-  // });
+// ref.once('value').then( function(snapshot) {
+//   msgD = snapshot.key;
+//   console.log(msgD);
+//   if (snapshot.key == ip && msgD !== null) {
+//     if (!Object.values(snapshot.key).map((x, index) => Object.keys(x)[index]).includes(msgId)) {//Object.valuse(msgD).indexOf(msgId) > -1
+//       console.log("New ID");
+//       ref.push(msgId);
+//     }
+//   } else {
+//     console.log("New IP");
+//     ref.push(msgId);
+//   }
+// });
 
 // function ipsLikes(ip,msgId) {
 //   ip = ip.replace(/\./g, "dot");
@@ -137,7 +137,7 @@ io.on('connection', client => {
     // console.log(clientIps+'|'+clientIds);
     count--;
     io.emit("updateCount", count);
-    console.log("User disconnected, user count: " + count );
+    console.log("User disconnected, user count: " + count);
     countIp = ips.length;
     //io.emit("updateCount", countIp);
   });
@@ -146,12 +146,12 @@ io.on('connection', client => {
 let interfaces = os.networkInterfaces();
 let addresses = [];
 for (let k in interfaces) {
-    for (let k2 in interfaces[k]) {
-        let address = interfaces[k][k2];
-        if (address.family === 'IPv4' && !address.internal) {
-            addresses.push(address.address);
-        }
+  for (let k2 in interfaces[k]) {
+    let address = interfaces[k][k2];
+    if (address.family === 'IPv4' && !address.internal) {
+      addresses.push(address.address);
     }
+  }
 }
 let getRandomColor = () => {
   let letters = '0123456789ABCDEF';
@@ -258,57 +258,58 @@ var roomno = 1;
 var clientsRu = {};
 var clientImgur = process.env.IMGUR_CLIENT_ID;
 io.on("connection", client => {
-  console.log(`request.connection: ${client.request.connection.remoteAddress} | conn.remoteAddress: ${client.conn.remoteAddress} | handshake: ${client.handshake.address}`); 
-  client.emit("clientId",clientImgur);
+  console.log(`request.connection: ${client.request.connection.remoteAddress} | conn.remoteAddress: ${client.conn.remoteAddress} | handshake: ${client.handshake.address}`);
+  client.emit("clientId", clientImgur);
   io.emit("updateCount", count);
-  client.on('create', function(room) {
+  client.on('create', function (room) {
     io.emit("updateCount", count);
     room = room.toString();
     io.in(room).allSockets()
-    .then(sockets => {
+      .then(sockets => {
         const clients = Array.from(sockets);
         console.log(`Clients in room ${room}: ${clients.length}`);
         // Do whatever you need with the `clients` array here
-    })
-    .catch(error => {
+      })
+      .catch(error => {
         console.error(error);
-    });
-    if(clientsRu[client.id] !== room) {
+      });
+    if (clientsRu[client.id] !== room) {
       clientsRu[client.id] = undefined;
       client.emit('clearAll');
-      client.emit("sendsys",false,null);
+      client.emit("sendsys", false, null);
       var messagesLength;
       ref = db.ref("messages");
-      ref.on("value", function(snapshot) {
+      ref.on("value", function (snapshot) {
         messagesLength = snapshot.numChildren();
       });
-      for(let i = 0; i < messagesLength; i++){
+      for (let i = 0; i < messagesLength; i++) {
         ref = db.ref("messages");
-        ref.on("value", function(snapshot) {
+        ref.on("value", function (snapshot) {
           let dt = snapshot.val();
           let indexM = Object.keys(dt)[i];
-          if(dt[indexM].room == room && clientsRu[client.id] == undefined && indexM !== undefined && indexM !== null && indexM !== "") {
-            client.emit("thread", dt[indexM].color, dt[indexM].name, dt[indexM].message, dt[indexM].dir, dt[indexM].type, false, indexM , dt[indexM].reply, dt[indexM].copy,null,null,dt[indexM].time+" | "+dt[indexM].date, dt[indexM].likes);
+          if (dt[indexM].room == room && clientsRu[client.id] == undefined && indexM !== undefined && indexM !== null && indexM !== "") {
+            client.emit("thread", dt[indexM].color, dt[indexM].name, dt[indexM].message, dt[indexM].dir, dt[indexM].type, false, indexM, dt[indexM].reply, dt[indexM].copy, null, null, dt[indexM].time + " | " + dt[indexM].date, dt[indexM].likes);
           }
         }, function (errorObject) {
           console.log("The read failed: " + errorObject.code);
         });
       }
     }
-    if(roomes.includes(room)){
+    if (roomes.includes(room)) {
       client.leaveAll();
       client.join(room);
       clientsRu[client.id] = room;
-      const roomId = io.sockets.adapter.sids[client.id] ? Object.keys(io.sockets.adapter.sids[client.id])[0] : null;
+      const rooms = Array.from(client.rooms);
+      const roomId = rooms.find(r => r !== client.id) || null;
       if (roomId) {
-        io.of('/').in(Object.keys(io.sockets.adapter.sids[client.id])[0]).clients(function(error,clients){
-          io.emit('updateRoom',clients.length);
+        io.of('/').in(roomId).clients(function (error, clients) {
+          io.emit('updateRoom', clients.length);
         });
       } else {
         console.error("Client ID or room ID is undefined.");
       }
-      client.emit("sendsys","joindRoom", room);
-      io.sockets.in(Object.keys(io.sockets.adapter.sids[client.id])[0]).emit('connectToRoom','Another one joined the room.');
+      client.emit("sendsys", "joindRoom", room);
+      io.sockets.in(roomId).emit('connectToRoom', 'Another one joined the room.');
     } else {
       client.leaveAll();
       roomes.push(room);
@@ -318,43 +319,43 @@ io.on("connection", client => {
       const roomId = io.sockets.adapter.sids[client.id] ? Object.keys(io.sockets.adapter.sids[client.id])[0] : null;
 
       if (roomId) {
-          io.in(roomId).allSockets()
-              .then(sockets => {
-                  const clients = Array.from(sockets);
-                  console.log(`Clients in room ${roomId}: ${clients.length}`);
-                  io.emit('updateRoom', clients.length);
-                  // Additional processing if needed
-              })
-              .catch(error => {
-                  console.error("Error retrieving clients in room:", error);
-              });
+        io.in(roomId).allSockets()
+          .then(sockets => {
+            const clients = Array.from(sockets);
+            console.log(`Clients in room ${roomId}: ${clients.length}`);
+            io.emit('updateRoom', clients.length);
+            // Additional processing if needed
+          })
+          .catch(error => {
+            console.error("Error retrieving clients in room:", error);
+          });
       } else {
-          console.error("Client ID or room ID is undefined.");
+        console.error("Client ID or room ID is undefined.");
       }
 
-      io.sockets.in(room).emit('connectToRoom', "You are in room: "+room);
-      client.emit("sendsys","createdRoom", room);
+      io.sockets.in(room).emit('connectToRoom', "You are in room: " + room);
+      client.emit("sendsys", "createdRoom", room);
       roomno++;
     }
     console.log(`Client joined room: ${room}.`);
     //console.log(Object.keys(io.sockets.adapter.sids[client.id])[0]);
   });
-  io.emit('upNindex',nindex);
-  io.emit('nameList',Object.values(nameAndId));
+  io.emit('upNindex', nindex);
+  io.emit('nameList', Object.values(nameAndId));
   console.log("Client connected...");
   client.on("join", data => {
     console.log(data);
   });
   client.on('saveName', name => {
-    if (name == null ) {
+    if (name == null) {
       return false;
     } else {
       let id = client.id;
       nameAndId[id] = name;
-      io.emit('nameList',Object.values(nameAndId));
+      io.emit('nameList', Object.values(nameAndId));
     }
   });
-  client.on("messages", (color, name , msg, reply) => {
+  client.on("messages", (color, name, msg, reply) => {
     msg = msg.toString();
     let copy = msg.replace(/</g, "&lt;").replace(/>/g, "&gt;");
     if (typeof name === "string") {
@@ -374,56 +375,58 @@ io.on("connection", client => {
     let privateMsg = [];
 
     let reverse = s => {
-        return s.split("").reverse().join("");
+      return s.split("").reverse().join("");
     }
     let reverseHe = txt => {
       let he = /[\u0590-\u05FF]+/g;
       let wl = txt.match(he);
       let i = 0;
-        while (match = he.exec(txt) !== null) {
-          let word = wl[i];
-          i++;
-          console.log(`original: ${word}, full text: ${txt}`);
-          txt = txt.replace(word,reverse(word));
-          console.log(`new: ${reverse(word)}, full text: ${txt}`);
-        }
+      while (match = he.exec(txt) !== null) {
+        let word = wl[i];
+        i++;
+        console.log(`original: ${word}, full text: ${txt}`);
+        txt = txt.replace(word, reverse(word));
+        console.log(`new: ${reverse(word)}, full text: ${txt}`);
+      }
       if (hl.length >= el.length || el == 0 && hl !== 0) {
         let ary = txt.split(" ");
         ary.reverse();
         txt = ary.join(' ');
       }
-        return txt;
+      return txt;
     }
-    let sendType = (type,heb,tit,id) => {
+    let sendType = (type, heb, tit, id) => {
       if (id !== undefined && id.length < 9) {
-        id = null,tit = null;
+        id = null, tit = null;
       }
       let time = new Date();
-      let hour = time.getHours()+":"+time.getMinutes();
-      let date = time.getDate()+"/"+(time.getMonth()+1)+"/"+time.getFullYear();
-      if(privateMsg.length > 0) {
-          for (let i = 0; i < privateMsg.length; i++) {
-            if(privateMsg[i] !== client.id) {
-              io.sockets.connected[ privateMsg[i] ].emit("sound", 1);
-              io.sockets.connected[ privateMsg[i] ].emit("thread", color, name, msg, heb, type, false, messageId, reply, copy,tit,id,null);
-              writeMessage(hour,date,heb,msg,name,reply,null,copy,client.id,privateMsg[i],color,type,0);
-            }
+      let hour = time.getHours() + ":" + time.getMinutes();
+      let date = time.getDate() + "/" + (time.getMonth() + 1) + "/" + time.getFullYear();
+      if (privateMsg.length > 0) {
+        for (let i = 0; i < privateMsg.length; i++) {
+          if (privateMsg[i] !== client.id) {
+            io.sockets.connected[privateMsg[i]].emit("sound", 1);
+            io.sockets.connected[privateMsg[i]].emit("thread", color, name, msg, heb, type, false, messageId, reply, copy, tit, id, null);
+            writeMessage(hour, date, heb, msg, name, reply, null, copy, client.id, privateMsg[i], color, type, 0);
           }
+        }
       } else {
-        if(Object.keys(io.sockets.adapter.sids[client.id])[1] == '$') {
+        const rooms = Array.from(client.rooms);
+        const roomId = rooms.includes('$') ? '$' : rooms.find(r => r !== client.id);
+        if (roomId === '$') {
           client.broadcast.to('$').emit("sound", 1);
-          client.broadcast.to('$').emit("thread", color, name, msg, heb, type, false, messageId, reply, copy,tit,id,null);
-          writeMessage(hour,date,heb,msg,name,reply,'$',copy,client.id,null,color,type,0);
+          client.broadcast.to('$').emit("thread", color, name, msg, heb, type, false, messageId, reply, copy, tit, id, null);
+          writeMessage(hour, date, heb, msg, name, reply, '$', copy, client.id, null, color, type, 0);
         } else {
-          console.log("Write to:"+Object.keys(io.sockets.adapter.sids[client.id])[0]);
-          client.broadcast.to(Object.keys(io.sockets.adapter.sids[client.id])[0]).emit("sound", 1);
-          client.broadcast.to(Object.keys(io.sockets.adapter.sids[client.id])[0]).emit("thread", color, name, msg, heb, type, false, messageId, reply, copy,tit,id,null);
-          writeMessage(hour,date,heb,msg,name,reply,Object.keys(io.sockets.adapter.sids[client.id])[0],copy,client.id,null,color,type,0);
+          console.log("Write to:" + roomId);
+          client.broadcast.to(roomId).emit("sound", 1);
+          client.broadcast.to(roomId).emit("thread", color, name, msg, heb, type, false, messageId, reply, copy, tit, id, null);
+          writeMessage(hour, date, heb, msg, name, reply, roomId, copy, client.id, null, color, type, 0);
         }
       }
-      client.emit("thread", color, name, msg, heb, type, true, messageId, reply, copy,id,null);
+      client.emit("thread", color, name, msg, heb, type, true, messageId, reply, copy, id, null);
     }
-    
+
     if (msg.startsWith('(')) {
       let mayName = msg.split('(').pop().split(')')[0];
       let array = mayName.split(",");
@@ -440,37 +443,37 @@ io.on("connection", client => {
           }
         }
       }
-      msg = msg.replace(`(${array})`,'');
+      msg = msg.replace(`(${array})`, '');
     } else if (msg.startsWith('[')) {
       let mayName = msg.split('[').pop().split(']')[0];
       let array = mayName.split(",");
-        if (array.length > 0) {
-          for (let i = 0 ; i < Object.keys(nameAndId).length ; i++) {
-            privateMsg.push(Object.keys(nameAndId)[i]);
-          }
-          for (let i = 0; i < privateMsg.length; i++) {
-            let index = Object.values(nameAndId).indexOf(array[i]);
-            if (index > -1) {
-              let thisId = Object.keys(nameAndId)[index];
-              let keyNames = Object.keys(nameAndId);
-              if (keyNames.includes(thisId)) {
-                let ioi = privateMsg.indexOf(thisId);
-                privateMsg.splice(ioi,1);
-              }
+      if (array.length > 0) {
+        for (let i = 0; i < Object.keys(nameAndId).length; i++) {
+          privateMsg.push(Object.keys(nameAndId)[i]);
+        }
+        for (let i = 0; i < privateMsg.length; i++) {
+          let index = Object.values(nameAndId).indexOf(array[i]);
+          if (index > -1) {
+            let thisId = Object.keys(nameAndId)[index];
+            let keyNames = Object.keys(nameAndId);
+            if (keyNames.includes(thisId)) {
+              let ioi = privateMsg.indexOf(thisId);
+              privateMsg.splice(ioi, 1);
             }
           }
         }
-        msg = msg.replace(`[${array}]`,'');
       }
+      msg = msg.replace(`[${array}]`, '');
+    }
     //serach images
     if (msg.startsWith('@')) {
       let num = Math.floor(Math.random() * 100) + 1;
-      msg = msg.replace(msg,`http://loremflickr.com/320/240/${msg.slice(1,msg.length)}?lock=${messageId}?random=${messageId}`);
+      msg = msg.replace(msg, `http://loremflickr.com/320/240/${msg.slice(1, msg.length)}?lock=${messageId}?random=${messageId}`);
       imgapi = true;
     }
     //text image
     if (msg.startsWith('#')) {
-      let txt,bc,tc;
+      let txt, bc, tc;
       if (msg.includes('=') && msg.includes('+')) {
         txt = msg.split('#').pop().split('=')[0];
         txt = reverseHe(txt);
@@ -478,36 +481,36 @@ io.on("connection", client => {
         tc = msg.toLowerCase().substring(msg.indexOf("+") + 1, msg.length);
         bc = colorNames(bc);
         tc = colorNames(tc);
-        msg = msg.replace(msg,`http://dummyimage.com/666x666/${bc}/${tc}&text=${txt}`);
+        msg = msg.replace(msg, `http://dummyimage.com/666x666/${bc}/${tc}&text=${txt}`);
       } else {
-        txt = msg.slice(1,msg.length);
+        txt = msg.slice(1, msg.length);
         txt = reverseHe(txt);
-        msg = msg.replace(msg,`http://dummyimage.com/666x666/${getRandomColor()}/${getRandomColor()}&text=${txt}`);
+        msg = msg.replace(msg, `http://dummyimage.com/666x666/${getRandomColor()}/${getRandomColor()}&text=${txt}`);
       }
       imgapi = true;
     }
     if (isUrlImage(msg) || imgapi) {
-      sendType('img',false);
+      sendType('img', false);
     } else if (isUrl(msg)) {
-      sendType('url',false);
-} else if (msg.startsWith("/קוד/")) {
-      msg = msg.slice(5,msg.length);
-      sendType('code',false);
+      sendType('url', false);
+    } else if (msg.startsWith("/קוד/")) {
+      msg = msg.slice(5, msg.length);
+      sendType('code', false);
     } else {
       if (hl.length >= el.length || el == 0 && hl !== 0) {
         heb = true;
       } else {
         heb = false;
       }
-      sendType('msg',heb);
+      sendType('msg', heb);
     }
     //give every message id a user id
     let id = client.id;
     messagesAndId[messageId] = id;
     if (msg == 'אחלה אתר') {
       let num = Math.floor(Math.random() * 12345) + 234;
-      for (let i = 0 ; i < num; i++) {
-        io.emit("likePu",messageId);
+      for (let i = 0; i < num; i++) {
+        io.emit("likePu", messageId);
       }
     }
     messageId++;
@@ -518,33 +521,29 @@ io.on("connection", client => {
     rp = replayData;
   });
   client.on('sysmsg', (msg) => {
-    if(msg===true) {
-      client.emit("sendsys", msg,null);
-    } else if(msg===false) {
-      client.emit("sendsys", msg,null);
+    if (msg === true) {
+      client.emit("sendsys", msg, null);
+    } else if (msg === false) {
+      client.emit("sendsys", msg, null);
     }
   });
   client.on('typing', name => {
     name = String(name);
-    if(nameAndId[client.id] == name || name === 'ללא שם') {
-      if(Object.keys(io.sockets.adapter.sids[client.id])[1] == '$') {
-        client.broadcast.to('$').emit('type' ,name);
-      } else {
-        client.broadcast.to(Object.keys(io.sockets.adapter.sids[client.id])[0]).emit('type' ,name);
-      }
+    if (nameAndId[client.id] == name || name === 'ללא שם') {
+      const rooms = Array.from(client.rooms);
+      const roomId = rooms.includes('$') ? '$' : rooms.find(r => r !== client.id);
+      client.broadcast.to(roomId).emit('type', name);
     }
   });
   client.on('stopType', name => {
     name = String(name);
-    if(Object.keys(io.sockets.adapter.sids[client.id])[1] == '$') {
-      client.broadcast.to('$').emit('stype' ,name);
-    } else {
-      client.broadcast.to(Object.keys(io.sockets.adapter.sids[client.id])[0]).emit('stype' ,name);
-    }
+    const rooms = Array.from(client.rooms);
+    const roomId = rooms.includes('$') ? '$' : rooms.find(r => r !== client.id);
+    client.broadcast.to(roomId).emit('stype', name);
   });
   client.on('like', mseId => {
     let id = client.id;
-    if(!isNaN(mseId)) {
+    if (!isNaN(mseId)) {
       if (messagesAndId[mseId] == id) {
         console.log("Can't like self msgs");
       } else if (likesAndId[mseId] == id) {
@@ -553,40 +552,40 @@ io.on("connection", client => {
         likesAndId[mseId] = id;
         let likes;
         console.log(mseId)
-        db.ref(`messages/${mseId}`).on("value", function(snapshot) {
+        db.ref(`messages/${mseId}`).on("value", function (snapshot) {
           likes = snapshot.val().likes;
         });
         console.log(likes);
-        if(likes !== null || likes !== undefined){
+        if (likes !== null || likes !== undefined) {
           likes++;
           db.ref(`messages/${mseId}`).update({
             "likes": likes
           });
-        //   let room;
-        //   if(Object.keys(io.sockets.adapter.sids[client.id])[1] == '$') {
-        //     room == '$';
-        //   } else {
-        //     room = Object.keys(io.sockets.adapter.sids[client.id])[0];
-        //   }
-        //   var messagesLength;
-        //   ref = db.ref("messages");
-        //   ref.on("value", function(snapshot) {
-        //     messagesLength = snapshot.numChildren();
-        //   });
-        //   for(let i = 0; i < messagesLength+1; i++){
-        //     ref = db.ref("messages");
-        //     ref.on("value", function(snapshot) {
-        //       let dt = snapshot.val();
-        //       let indexM = Object.keys(dt)[i];
-        //       if(dt[indexM].room == room) {
-        //         client.emit("delLastMessage");
-        //         client.broadcast.to(Object.keys(io.sockets.adapter.sids[client.id])[0]).emit("delLastMessage");
-        //       }
-        //     }, function (errorObject) {
-        //       console.log("The read failed: " + errorObject.code);
-        //     });
-        // }
-      }
+          //   let room;
+          //   if(Object.keys(io.sockets.adapter.sids[client.id])[1] == '$') {
+          //     room == '$';
+          //   } else {
+          //     room = Object.keys(io.sockets.adapter.sids[client.id])[0];
+          //   }
+          //   var messagesLength;
+          //   ref = db.ref("messages");
+          //   ref.on("value", function(snapshot) {
+          //     messagesLength = snapshot.numChildren();
+          //   });
+          //   for(let i = 0; i < messagesLength+1; i++){
+          //     ref = db.ref("messages");
+          //     ref.on("value", function(snapshot) {
+          //       let dt = snapshot.val();
+          //       let indexM = Object.keys(dt)[i];
+          //       if(dt[indexM].room == room) {
+          //         client.emit("delLastMessage");
+          //         client.broadcast.to(Object.keys(io.sockets.adapter.sids[client.id])[0]).emit("delLastMessage");
+          //       }
+          //     }, function (errorObject) {
+          //       console.log("The read failed: " + errorObject.code);
+          //     });
+          // }
+        }
         io.emit("likePu", mseId);
         client.emit("likePr", mseId);
       }
@@ -594,9 +593,9 @@ io.on("connection", client => {
   });
   client.on('trash', mseId => {
     let id = client.id;
-    if(!isNaN(mseId)) {
+    if (!isNaN(mseId)) {
       if (messagesAndId[mseId] == id) {
-        io.emit("delThis",mseId);
+        io.emit("delThis", mseId);
         db.ref(`messages/${mseId}`).remove();
       } else {
         console.log(`Can't delete others messages, client id: ${id}, message id: ${mseId}, messages and ids: `);
@@ -606,13 +605,14 @@ io.on("connection", client => {
   });
   client.on('updateI', () => {
     nindex++;
-    io.emit('upNindex',nindex);
+    io.emit('upNindex', nindex);
   });
   client.on('updateRc', () => {
-    const roomId = io.sockets.adapter.sids[client.id] ? Object.keys(io.sockets.adapter.sids[client.id])[0] : null;
+    const rooms = Array.from(client.rooms);
+    const roomId = rooms.find(r => r !== client.id);
     if (roomId) {
-      io.of('/').in(Object.keys(io.sockets.adapter.sids[client.id])[0]).clients(function(error,clients){
-        io.emit('updateRoom',clients.length);
+      io.of('/').in(roomId).clients(function (error, clients) {
+        io.emit('updateRoom', clients.length);
       });
     } else {
       console.error("Client ID or room ID is undefined.");
