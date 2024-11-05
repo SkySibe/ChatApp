@@ -264,30 +264,35 @@ io.on("connection", client => {
   client.on('create', function (room) {
     io.emit("updateCount", count);
     room = room.toString();
+  
+    // Get all clients in the room and log the count
     io.in(room).allSockets()
       .then(sockets => {
         const clients = Array.from(sockets);
         console.log(`Clients in room ${room}: ${clients.length}`);
-        // Do whatever you need with the `clients` array here
+        // Additional processing if needed
       })
       .catch(error => {
-        console.error(error);
+        console.error("Error retrieving clients in room:", error);
       });
+  
     if (clientsRu[client.id] !== room) {
       clientsRu[client.id] = undefined;
       client.emit('clearAll');
       client.emit("sendsys", false, null);
-      var messagesLength;
+  
+      let messagesLength;
       ref = db.ref("messages");
       ref.on("value", function (snapshot) {
         messagesLength = snapshot.numChildren();
       });
+  
       for (let i = 0; i < messagesLength; i++) {
         ref = db.ref("messages");
         ref.on("value", function (snapshot) {
           let dt = snapshot.val();
           let indexM = Object.keys(dt)[i];
-          if (dt[indexM].room == room && clientsRu[client.id] == undefined && indexM !== undefined && indexM !== null && indexM !== "") {
+          if (dt[indexM].room == room && clientsRu[client.id] == undefined && indexM) {
             client.emit("thread", dt[indexM].color, dt[indexM].name, dt[indexM].message, dt[indexM].dir, dt[indexM].type, false, indexM, dt[indexM].reply, dt[indexM].copy, null, null, dt[indexM].time + " | " + dt[indexM].date, dt[indexM].likes);
           }
         }, function (errorObject) {
@@ -295,19 +300,25 @@ io.on("connection", client => {
         });
       }
     }
+  
     if (roomes.includes(room)) {
       client.leaveAll();
       client.join(room);
       clientsRu[client.id] = room;
+  
       const rooms = Array.from(client.rooms);
       const roomId = rooms.find(r => r !== client.id) || null;
+  
       if (roomId) {
-        io.of('/').in(roomId).clients(function (error, clients) {
-          io.emit('updateRoom', clients.length);
+        io.in(roomId).allSockets().then(sockets => {
+          io.emit('updateRoom', Array.from(sockets).length);
+        }).catch(error => {
+          console.error("Error retrieving clients in room:", error);
         });
       } else {
         console.error("Client ID or room ID is undefined.");
       }
+  
       client.emit("sendsys", "joindRoom", room);
       io.sockets.in(roomId).emit('connectToRoom', 'Another one joined the room.');
     } else {
@@ -316,15 +327,15 @@ io.on("connection", client => {
       console.log(`New room has been created: ${room}, All the rooms ${JSON.stringify(roomes)}.`);
       client.join(room);
       clientsRu[client.id] = room;
-      const roomId = io.sockets.adapter.sids[client.id] ? Object.keys(io.sockets.adapter.sids[client.id])[0] : null;
-
+  
+      const roomId = Array.from(client.rooms).find(r => r !== client.id) || null;
+  
       if (roomId) {
         io.in(roomId).allSockets()
           .then(sockets => {
             const clients = Array.from(sockets);
             console.log(`Clients in room ${roomId}: ${clients.length}`);
             io.emit('updateRoom', clients.length);
-            // Additional processing if needed
           })
           .catch(error => {
             console.error("Error retrieving clients in room:", error);
@@ -332,14 +343,14 @@ io.on("connection", client => {
       } else {
         console.error("Client ID or room ID is undefined.");
       }
-
+  
       io.sockets.in(room).emit('connectToRoom', "You are in room: " + room);
       client.emit("sendsys", "createdRoom", room);
       roomno++;
     }
+  
     console.log(`Client joined room: ${room}.`);
-    //console.log(Object.keys(io.sockets.adapter.sids[client.id])[0]);
-  });
+  });  
   io.emit('upNindex', nindex);
   io.emit('nameList', Object.values(nameAndId));
   console.log("Client connected...");
