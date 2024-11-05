@@ -299,9 +299,14 @@ io.on("connection", client => {
       client.leaveAll();
       client.join(room);
       clientsRu[client.id] = room;
-      io.of('/').in(Object.keys(io.sockets.adapter.sids[client.id])[0]).clients(function(error,clients){
-        io.emit('updateRoom',clients.length);
-      });
+      const roomId = io.sockets.adapter.sids[client.id] ? Object.keys(io.sockets.adapter.sids[client.id])[0] : null;
+      if (roomId) {
+        io.of('/').in(Object.keys(io.sockets.adapter.sids[client.id])[0]).clients(function(error,clients){
+          io.emit('updateRoom',clients.length);
+        });
+      } else {
+        console.error("Client ID or room ID is undefined.");
+      }
       client.emit("sendsys","joindRoom", room);
       io.sockets.in(Object.keys(io.sockets.adapter.sids[client.id])[0]).emit('connectToRoom','Another one joined the room.');
     } else {
@@ -604,9 +609,14 @@ io.on("connection", client => {
     io.emit('upNindex',nindex);
   });
   client.on('updateRc', () => {
-    io.of('/').in(Object.keys(io.sockets.adapter.sids[client.id])[0]).clients(function(error,clients){
-      io.emit('updateRoom',clients.length);
-    });
+    const roomId = io.sockets.adapter.sids[client.id] ? Object.keys(io.sockets.adapter.sids[client.id])[0] : null;
+    if (roomId) {
+      io.of('/').in(Object.keys(io.sockets.adapter.sids[client.id])[0]).clients(function(error,clients){
+        io.emit('updateRoom',clients.length);
+      });
+    } else {
+      console.error("Client ID or room ID is undefined.");
+    }
   });
 });
 console.log(`Server running on: ${addresses[0]}:${port} | ${hostname}`);
