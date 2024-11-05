@@ -310,9 +310,23 @@ io.on("connection", client => {
       console.log(`New room has been created: ${room}, All the rooms ${JSON.stringify(roomes)}.`);
       client.join(room);
       clientsRu[client.id] = room;
-      io.of('/').in(Object.keys(io.sockets.adapter.sids[client.id])[0]).clients(function(error,clients){
-        io.emit('updateRoom',clients.length);
-      });
+      const roomId = io.sockets.adapter.sids[client.id] ? Object.keys(io.sockets.adapter.sids[client.id])[0] : null;
+
+      if (roomId) {
+          io.in(roomId).allSockets()
+              .then(sockets => {
+                  const clients = Array.from(sockets);
+                  console.log(`Clients in room ${roomId}: ${clients.length}`);
+                  io.emit('updateRoom', clients.length);
+                  // Additional processing if needed
+              })
+              .catch(error => {
+                  console.error("Error retrieving clients in room:", error);
+              });
+      } else {
+          console.error("Client ID or room ID is undefined.");
+      }
+
       io.sockets.in(room).emit('connectToRoom', "You are in room: "+room);
       client.emit("sendsys","createdRoom", room);
       roomno++;
